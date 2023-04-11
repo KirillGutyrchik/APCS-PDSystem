@@ -353,6 +353,31 @@ namespace PDSystem.Device
         }
 
         /// <summary>
+        /// Описание подтипа
+        /// </summary>
+        /// <remarks>
+        /// Создает клон шаблона описания устройства, который храниться в
+        /// объекте подтипа
+        /// </remarks>
+        /// <returns>Пустое описание устройства</returns>
+        public DeviceDescription Description ()
+            => (DeviceDescription)deviceDescriptionTemplate.Clone(); 
+
+
+        /// <summary>
+        /// Шаблон описания устройства подтипа
+        /// </summary>
+        private DeviceDescription deviceDescriptionTemplate = new();
+
+        /// <summary>
+        /// Инициализация параметров шаблона
+        /// </summary>
+        private DeviceParameters Parameters 
+        { 
+            init => deviceDescriptionTemplate.Parameters = value; 
+        }
+
+        /// <summary>
         /// Коэффициент типа ( IDподтипа = №подтипа + IDтипа * коефициент типа )
         /// </summary>
         private const int typeWeight = 1000;
