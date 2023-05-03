@@ -93,6 +93,28 @@ namespace PDSystem.Device
 
         public string ArticleName { get => deviceInfo.ArticleName; set => deviceInfo.ArticleName = value; }
 
+        /// <summary> Параметры </summary>
+        public DeviceParameters Parameters => deviceDescription.Parameters;
+
+        /// <summary> Свойства </summary>
+        public DeviceProperties Properties => deviceDescription.Properties;
+
+        /// <summary> Каналы </summary>
+        public List<IOChannel> Channels => deviceDescription.Channels;
+
+        /// <summary> Входные аналоговые каналы </summary>
+        public List<IOChannel> AI => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.AI).ToList();
+
+        /// <summary> Выходные аналоговые каналы </summary>
+        public List<IOChannel> AO => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.AO).ToList();
+
+        /// <summary> Входные дискретные каналы </summary>
+        public List<IOChannel> DI => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.DI).ToList();
+
+        /// <summary> Выходные дискретные каналы </summary>
+        public List<IOChannel> DO => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.DO).ToList();
+
+
         /// <summary>
         /// Сравнение объектов для сортировки.
         /// </summary>
@@ -108,14 +130,27 @@ namespace PDSystem.Device
             if (otherDevice == null)
                 return 1;
 
-            if (DeviceType == otherDevice.DeviceType)
-            {
-                return string.CompareOrdinal(Name, otherDevice.Name);
-            }
-            else
+            if (DeviceType != otherDevice.DeviceType)
             {
                 return DeviceType.CompareTo(otherDevice.DeviceType);
             }
+            
+            if (ObjectName != otherDevice.ObjectName)
+            {
+                return ObjectName.CompareTo(otherDevice.ObjectName);
+            }
+
+            if (ObjectNumber != otherDevice.ObjectNumber) 
+            { 
+                return ObjectNumber.CompareTo(otherDevice.ObjectNumber);
+            }
+
+            if (DeviceNumber != otherDevice.DeviceNumber)
+            {
+                return DeviceNumber.CompareTo(otherDevice.DeviceNumber);
+            }
+
+            return 0;
         }
 
         public bool Equals(Device? otherDevice)
@@ -133,9 +168,10 @@ namespace PDSystem.Device
             throw new NotImplementedException();
         }
 
-        public string GetRange()
+        
+        public virtual string GetRange()
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public void SetIolConfProperty(string propertyName, double value)

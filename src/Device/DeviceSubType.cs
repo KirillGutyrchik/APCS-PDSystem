@@ -344,7 +344,7 @@ namespace PDSystem.Device
         /// <summary>
         /// Описание устройства с пустыми значениями
         /// </summary>
-        public DeviceDescription Description => description.Clone();
+        public DeviceDescription Description => description.CloneTemplate();
 
         /// <summary>
         /// Инициализация параметров для шаблона описания

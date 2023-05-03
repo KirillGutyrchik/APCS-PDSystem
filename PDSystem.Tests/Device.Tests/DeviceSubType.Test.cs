@@ -7,7 +7,7 @@ using NUnit.Framework;
 using PDSystem.Device;
 using PDSystem.Ext;
 
-namespace PDSystemTests.Device
+namespace PDSystemTests.DeviceTests
 {
     public class DeviceSubTypeTest
     {

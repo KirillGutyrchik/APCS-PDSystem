@@ -12,45 +12,59 @@ namespace PDSystem.Device
     public record class Property
     {
         /// <summary>
+        /// Пустое свойство
+        /// </summary>
+        public static readonly Property NONE = new Property(nameof(NONE));
+
+        /// <summary>
         /// Связанные моторы.
         /// </summary>
-        public static readonly Property MT = new(nameof(MT));
+        public static readonly Property MT = new(nameof(MT), "Связанные моторы");
 
         /// <summary>
         /// Датчик давления.
         /// </summary>
-        public static readonly Property PT = new(nameof(PT));
+        public static readonly Property PT = new(nameof(PT), "Датчик давления");
 
         /// <summary>
         /// Входное значение (обычно для ПИД-а).
         /// </summary>
-        public static readonly Property IN_VALUE = new(nameof(IN_VALUE));
+        public static readonly Property IN_VALUE = new(nameof(IN_VALUE), "Входное значение");
 
         /// <summary>
         /// Выходное значение (обычно для ПИД-а).
         /// </summary>
-        public static readonly Property OUT_VALUE = new(nameof(OUT_VALUE));
+        public static readonly Property OUT_VALUE = new(nameof(OUT_VALUE), "Выходное значение");
 
         /// <summary>
         /// IP-адрес устройства.
         /// </summary>
-        public static readonly Property IP = new(nameof(IP));
+        public static readonly Property IP = new(nameof(IP), "IP-адрес");
 
         /// <summary>
         /// Последовательность сигналов.
         /// </summary>
-        public static readonly Property SIGNALS_SEQUENCE = new(nameof(SIGNALS_SEQUENCE));
+        public static readonly Property SIGNALS_SEQUENCE = new(nameof(SIGNALS_SEQUENCE), "Последовательность сигналов");
 
-
+        /// <summary>
+        /// Название свойства
+        /// </summary>
         public string Name => name;
 
+        /// <summary>
+        /// Описание свойства
+        /// </summary>
+        public string Description => description;   
 
-        private Property(string name) 
+
+        private Property(string name, string description = "") 
         { 
             this.name = name;
+            this.description = description;
         }
 
         private string name;
+        private string description;
     }
 
     public class DeviceProperties
@@ -93,6 +107,10 @@ namespace PDSystem.Device
 
         }
 
+        /// <summary>
+        /// Конструктор для инициализации свойств из списка свойств
+        /// </summary>
+        /// <param name="parametersList">Список свойств</param>
         public DeviceProperties(List<Property> parametersList)
         {
             properties = parametersList.ToDictionary<Property, Property, object?>(prop => prop, prop => null);

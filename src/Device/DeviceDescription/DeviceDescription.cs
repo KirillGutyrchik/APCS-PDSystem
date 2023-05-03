@@ -15,15 +15,15 @@ namespace PDSystem.Device
         /// Клонирование описания
         /// </summary>
         /// <returns>Клон описания устройства с пустыми значениями</returns>
-        public DeviceDescription Clone()
+        public DeviceDescription CloneTemplate()
         {
-            var clone = new DeviceDescription()
-            {
+            //var clone = new DeviceDescription()
+            //{
+            //
+            //};
 
-            };
-            
-
-            throw new NotImplementedException();
+            return null;
+            //throw new NotImplementedException();
         }
 
         public List<IOChannel> Channels

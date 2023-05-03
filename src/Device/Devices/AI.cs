@@ -12,8 +12,8 @@ namespace PDSystem.Device
         public static readonly DeviceSubType AI = new(SubTypeIdentifier(DeviceType.AI) + 1, nameof(AI))
         {
             Parameters = new() 
-            { 
-                Parameter.P_C0, 
+            {
+                Parameter.P_C0,
                 Parameter.P_MIN_V, 
                 Parameter.P_MAX_V 
             },
@@ -23,8 +23,11 @@ namespace PDSystem.Device
             },
             DeviceTags = new()
             {
+                { Tag.M, 1 },
+                { Tag.ST, 1 },
                 { Parameter.P_MIN_V, 1 },
                 { Parameter.P_MAX_V, 1 },
+                {Tag.V, 1},
             },
         };
 
@@ -33,7 +36,9 @@ namespace PDSystem.Device
         {
             DeviceTags = new()
             {
-                
+                {Tag.M, 1},
+                {Tag.ST, 1},
+                {Tag.V, 1},
             },
         };
     }
@@ -48,6 +53,17 @@ namespace PDSystem.Device
             deviceDescription = subType.Description;
         }
 
+        public override string GetRange()
+        {
+            string range = string.Empty;
+            if (Parameters.ContainsParameter(Parameter.P_MIN_V) &&
+                Parameters.ContainsParameter(Parameter.P_MAX_V))
+            {
+                range = "_" + Parameters[Parameter.P_MIN_V]?.ToString() +
+                    ".." + Parameters[Parameter.P_MAX_V]?.ToString();
+            }
 
+            return range;
+        }
     }
 }
