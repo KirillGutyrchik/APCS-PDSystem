@@ -250,6 +250,14 @@ namespace PDSystem.Device
             set => this[parameters.Keys.ElementAtOrDefault(parameterId) ?? Parameter.NONE] = value;
         }
 
+        public List<Parameter> ToList()
+        {
+            return parameters.Select(parameter => parameter.Key).ToList();
+        }
+
+        
+        public DeviceParameters CloneTemplate() => new DeviceParameters(ToList());
+
         /// <summary>
         /// Содержит параметр
         /// </summary>

@@ -17,13 +17,12 @@ namespace PDSystem.Device
         /// <returns>Клон описания устройства с пустыми значениями</returns>
         public DeviceDescription CloneTemplate()
         {
-            //var clone = new DeviceDescription()
-            //{
-            //
-            //};
-
-            return null;
-            //throw new NotImplementedException();
+            return new DeviceDescription()
+            {
+                Parameters = parameters?.CloneTemplate() ?? new(),
+                Properties = properties?.CloneTemplate() ?? new(),
+                Channels = channels?.Select(ch => new IOChannel(ch.ChannelType, ch.Comment)).ToList() ?? new(),
+            };
         }
 
         public List<IOChannel> Channels

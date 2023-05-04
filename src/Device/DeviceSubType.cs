@@ -195,14 +195,8 @@ namespace PDSystem.Device
         /// <summary> Виртуальный дискретный выход(без привязки к модулям) </summary>
         public static readonly DeviceSubType DO_VIRT = new(SubTypeIdentifier(DeviceType.DO) + 2, nameof(DO_VIRT));
         #endregion
-        #region AI  - Аналоговый входной сигнал
-        
-        #endregion
         #region AO  - Аналоговый выходной сигнал
-        /// <summary> Аналоговый выход с привязкой к модулям ввода-вывода </summary>
-        public static readonly DeviceSubType AO = new(SubTypeIdentifier(DeviceType.AO) + 1, nameof(AO));
-        /// <summary> Виртуальный аналоговый выход (без привязки к модулям) </summary>
-        public static readonly DeviceSubType AO_VIRT = new(SubTypeIdentifier(DeviceType.AO) + 2, nameof(AO_VIRT));
+        
         #endregion
         #region WT  - Датчик веса
         /// <summary> Весы </summary>

@@ -102,6 +102,16 @@ namespace PDSystem.Device
             }
         }
 
+        /// <summary>
+        /// Получить список параметров
+        /// </summary>
+        public List<Property> ToList()
+        {
+            return properties.Select(property => property.Key).ToList();
+        }
+
+        public DeviceProperties CloneTemplate() => new DeviceProperties(ToList());
+
         public DeviceProperties()
         {
 
