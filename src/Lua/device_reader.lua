@@ -1,24 +1,16 @@
 -- Инициализация устройств.
 -- Таблица устройств devices в файле проекта main.io.lua
-DevicesInit = function ()
-	if devices == nil then
-		return 1
+function DevicesInit()
+	if not devices then
+		return
 	end
 
 	for _, device_table in pairs(devices) do
-		local device = DeviceManager:AddDevice(device_table.name, device_table.subtype)
-		rawset(device, "Description", device_table.descr)
-		return device.ArticleName
-		--device.Parameters[1] = 5
-	end
-
-	return 0
-end
-
-SetProperty = function (table, key, value)
-	table.__newindex = function(table, key, value)
-		if key == "Name" then
-			return rawset(tbl, "name", value)
-		end
+		local device = DeviceManager:AddDevice(device_table.name, device_table.dtype, device_table.subtype, device_table.descr, device_table.article)
+		device:SetParameters(device_table.par or nil)
+		--SetChannels(device:GetChannels("DO"), device_table.DO or nil)
+		--SetChannels(device:GetChannels("DI"), device_table.DI or nil)
+		--SetChannels(device:GetChannels("AO"), device_table.AO or nil)
+		--SetChannels(device:GetChannels("AI"), device_table.AI or nil)
 	end
 end

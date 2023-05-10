@@ -1,6 +1,7 @@
 ﻿using LuaInterface;
 using System.Reflection;
 using PDSystem.Device;
+using System.Text.Unicode;
 
 namespace PDSystem.LUA
 {
@@ -11,12 +12,12 @@ namespace PDSystem.LUA
         public LuaDeviceReader()
         {
                     
-            LuaManager.Instance.Lua.DoFile("C:\\Users\\gutyr\\Desktop\\ptusa_test_prj\\main.io.lua");
+            LuaManager.Instance.Lua.DoFile("C:\\Users\\asu10\\Desktop\\Test\\main.io.lua");
 
             LuaManager.Instance.Lua.DoFile(Path.Combine(Path.GetDirectoryName(Assembly
                 .GetExecutingAssembly().Location) ?? "", DeviceReaderLuaFileName));
 
-            LuaManager.Instance.Lua["DeviceManager"] = DeviceManager.Instance;
+            LuaManager.Instance.Lua["DeviceManager"] = new LuaDeviceManager();
         }
 
         public void InitDevices()
@@ -25,32 +26,31 @@ namespace PDSystem.LUA
             init_devices?.Call();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Стили именования")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
-        public class device_manager
+
+        public class LuaDeviceManager
         {
-            public device? add_device(string name, int subType, string description, string article)
+            public LuaDevice? AddDevice(string name, int type, int subType, string description, string article)
             {
-                var device = DeviceManager.Instance.AddDevice(name, subType);
+                var device = DeviceManager.Instance.AddDevice(name, type, subType);
                 if (device == null) return null;
-                
+
                 device.Description = description;
                 device.ArticleName = article;
 
-                return new device(device);
+                return new LuaDevice(device);
             }
 
 
-            public class device
+            public class LuaDevice
             {
-                Device.Device tagDevice;
+                private Device.Device tagDevice;
 
-                public device(Device.Device device)
+                public LuaDevice(Device.Device device)
                 {
                     tagDevice = device;
                 }
 
-                public void set_parameter(int parameter_id, object? value)
+                public void SetParameters(LuaTable? parameters)
                 {
 
                 }

@@ -8,6 +8,7 @@ namespace PDSystem.LUA
         {
         }
 
+
         public static LuaManager Instance => instance ??= new();
         public Lua Lua => lua;
 

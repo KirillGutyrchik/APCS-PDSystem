@@ -52,16 +52,34 @@ namespace PDSystem.Device
             this.comment = comment;
         }
 
-        public int LogicalClamp => throw new NotImplementedException();
 
-        public string Name => throw new NotImplementedException();
 
-        public string Comment => throw new NotImplementedException();
+        public string Name => channelType.Name;
 
-        public int ModuleOffset => throw new NotImplementedException();
+        public string Comment => comment;
 
-        public int FullModule => throw new NotImplementedException();
 
+
+        public int FullModule => fullModule;
+
+
+        public int Node => node;
+        public int Offset => offset;
+
+        public int PhysicalClamp => physicalClamp;
+
+        public int LogicalClamp => logicalClamp;
+
+        public int ModuleOffset => moduleOffset;
+
+        public void SetChannelBinding(int node, int offset, int physical_port, int logical_port, int module_offset)
+        {
+            this.node = node;
+            this.offset = offset;
+            this.physicalClamp = physical_port;
+            this.logicalClamp = logical_port;
+            this.moduleOffset = module_offset;
+        }
 
         public ChannelType ChannelType
         {
@@ -70,6 +88,8 @@ namespace PDSystem.Device
                 return channelType;
             }
         }
+
+        private int offset;
 
         /// <summary> Номер узла. </summary>
         private int node;

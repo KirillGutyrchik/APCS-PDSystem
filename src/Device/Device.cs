@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LuaInterface;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -79,7 +81,11 @@ namespace PDSystem.Device
 
         public string CADName => deviceInfo.CADName;
 
-        public string Description { get => deviceInfo.Description; set => deviceInfo.Description = value; }
+        public string Description 
+        { 
+            get => deviceInfo.Description; 
+            set => deviceInfo.Description = value; 
+        }
 
         public int ObjectNumber => deviceInfo.ObjectNumber;
 
@@ -87,12 +93,20 @@ namespace PDSystem.Device
 
         public int DeviceNumber => deviceInfo.DeviceNumber;
 
-        public string ArticleName { get => deviceInfo.ArticleName; set => deviceInfo.ArticleName = value; }
+        public string ArticleName 
+        { 
+            get => deviceInfo.ArticleName;
+            set => deviceInfo.ArticleName = value; 
+        }
         #endregion
 
         public DeviceType DeviceType => deviceType ??= DeviceType.FromName(GetType().Name);
 
-        public DeviceSubType DeviceSubType { get => deviceSubType; init => deviceSubType = value; }
+        public DeviceSubType DeviceSubType 
+        { 
+            get => deviceSubType;
+            init => deviceSubType = value; 
+        }
 
         public Dictionary<string, double> IolConfProperties => throw new NotImplementedException();
 
@@ -119,6 +133,23 @@ namespace PDSystem.Device
 
         /// <summary> Выходные дискретные каналы </summary>
         public List<IOChannel> DO => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.DO).ToList();
+
+        #endregion
+
+        #region Lua-функции
+        public void SetParameters(LuaTable? parameters)
+        {
+            if (parameters is null) return;
+
+            int parameterIndex = 0;
+            foreach (var parameter in parameters.Values)
+            {
+                Parameters[parameterIndex++] = parameter;
+            }
+        }
+
+        public IOChannel[] GetChannels(string channelType) => deviceDescription.Channels.Where(ch => ch.Name == channelType).ToArray();
+
         #endregion
 
         /// <summary>

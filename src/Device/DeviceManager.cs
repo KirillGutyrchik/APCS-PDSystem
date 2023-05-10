@@ -57,14 +57,22 @@ namespace PDSystem.Device
             return device;
         }
 
-        public Device? AddDevice(string name, int subTypeID)
+        /// <summary>
+        /// Добавить устройство по назаванию, номеру типа и номеру подтипа.
+        /// Применяется при 
+        /// </summary>
+        /// <param name="name"> имя устройства </param>
+        /// <param name="typeID"> номер типа </param>
+        /// <param name="subTypeID"> номер подтипа </param>
+        /// <returns> Добавленное устройство </returns>
+        public Device? AddDevice(string name, int typeID,  int subTypeID)
         {
-            var deviceInfo = DeviceInfo.Parse(name) ?? new();
+            var deviceInfo = DeviceInfo.ParseLUA(name, typeID) ?? new();
 
             if (deviceInfo is null)
                 return null;
 
-            var type = DeviceType.FromName(deviceInfo.TypeStr);
+            var type = DeviceType.FromID(typeID);
             var subType = DeviceSubType.FromTypeAndID(type, subTypeID);
 
             return AddDevice(type, subType, deviceInfo);
