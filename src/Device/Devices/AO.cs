@@ -1,21 +1,20 @@
-﻿
-namespace PDSystem.Device
+﻿namespace PDSystem.Device
 {
     public partial record class DeviceSubType
     {
         /// <summary> Аналоговый выход с привязкой к модулям ввода-вывода </summary>
         public static readonly DeviceSubType AO = new(SubTypeIdentifier(DeviceType.AO) + 1, nameof(AO))
         {
-            Parameters = new()
+            Parameters =
             {
                 Parameter.P_MIN_V,
                 Parameter.P_MAX_V,
             },
-            Channels = new()
+            Channels =
             {
-                new IOChannel(ChannelType.AO, string.Empty),
+                AO = { string.Empty },
             },
-            DeviceTags = new()
+            DeviceTags =
             {
                 { Tag.M, 1 },
                 { Tag.V, 1 },
@@ -27,7 +26,7 @@ namespace PDSystem.Device
         /// <summary> Виртуальный аналоговый выход (без привязки к модулям) </summary>
         public static readonly DeviceSubType AO_VIRT = new(SubTypeIdentifier(DeviceType.AO) + 2, nameof(AO_VIRT))
         {
-            DeviceTags = new()
+            DeviceTags =
             {
                 { Tag.M, 1 },
                 { Tag.V, 1 },

@@ -22,6 +22,7 @@ namespace PDSystem.Device
                 Parameters = parameters?.CloneTemplate() ?? new(),
                 Properties = properties?.CloneTemplate() ?? new(),
                 Channels = channels?.Select(ch => new IOChannel(ch.ChannelType, ch.Comment)).ToList() ?? new(),
+                DeviceTags = deviceTags ?? new Dictionary<string, int>().ToImmutableDictionary(),
             };
         }
 
@@ -37,10 +38,10 @@ namespace PDSystem.Device
             set => parameters ??= value;
         }
 
-        public Dictionary<string, object?> RuntimeParameters
+        public DeviceRuntimeParameters RuntimeParameters
         {
-            get => runtimeParameters ?? throw new ArgumentNullException(nameof(runtimeParameters));
-            init => runtimeParameters = value ?? throw new ArgumentNullException(nameof(runtimeParameters));
+            get => runtimeParameters ?? new();
+            set => runtimeParameters ??= value;
         }
 
         public DeviceProperties Properties
@@ -63,7 +64,7 @@ namespace PDSystem.Device
 
         private List<IOChannel>? channels;
         private DeviceParameters? parameters;
-        private Dictionary<string, object?>? runtimeParameters;
+        private DeviceRuntimeParameters? runtimeParameters;
         private DeviceProperties? properties;
         private Dictionary<string, double>? iolConfProperties;
         private ImmutableDictionary<string, int>? deviceTags;

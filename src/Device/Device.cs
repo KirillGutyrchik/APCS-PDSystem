@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,29 +71,32 @@ namespace PDSystem.Device
         {
             this.deviceSubType = subType ?? DeviceSubType.NONE;
             this.deviceInfo = deviceInfo;
-            this.deviceDescription = subType?.Description ?? new();
+            this.deviceDescription = subType?.GetDescription() ?? new();
         }
 
+        #region DevcieInfo Getters
         public string Name => deviceInfo.Name;
 
         public string CADName => deviceInfo.CADName;
 
-        public string Description => deviceInfo.Description;
+        public string Description { get => deviceInfo.Description; set => deviceInfo.Description = value; }
 
         public int ObjectNumber => deviceInfo.ObjectNumber;
 
         public string ObjectName => deviceInfo.ObjectName;
 
         public int DeviceNumber => deviceInfo.DeviceNumber;
-         
+
+        public string ArticleName { get => deviceInfo.ArticleName; set => deviceInfo.ArticleName = value; }
+        #endregion
+
         public DeviceType DeviceType => deviceType ??= DeviceType.FromName(GetType().Name);
 
         public DeviceSubType DeviceSubType { get => deviceSubType; init => deviceSubType = value; }
 
         public Dictionary<string, double> IolConfProperties => throw new NotImplementedException();
 
-        public string ArticleName { get => deviceInfo.ArticleName; set => deviceInfo.ArticleName = value; }
-
+        #region Device Description getters
         /// <summary> Параметры </summary>
         public DeviceParameters Parameters => deviceDescription.Parameters;
 
@@ -101,6 +105,8 @@ namespace PDSystem.Device
 
         /// <summary> Каналы </summary>
         public List<IOChannel> Channels => deviceDescription.Channels;
+
+        public virtual ImmutableDictionary<string, int> DeviceTags => deviceDescription.DeviceTags;
 
         /// <summary> Входные аналоговые каналы </summary>
         public List<IOChannel> AI => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.AI).ToList();
@@ -113,7 +119,7 @@ namespace PDSystem.Device
 
         /// <summary> Выходные дискретные каналы </summary>
         public List<IOChannel> DO => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.DO).ToList();
-
+        #endregion
 
         /// <summary>
         /// Сравнение объектов для сортировки.

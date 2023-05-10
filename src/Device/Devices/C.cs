@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PDSystem.Device
+﻿namespace PDSystem.Device
 {
     public partial record class DeviceSubType
     {
         public static readonly DeviceSubType C = new(SubTypeIdentifier(DeviceType.C) + 1, nameof(C))
         {
-            Parameters = new()
+            Parameters =
             {
                 Parameter.P_k,
                 Parameter.P_Ti,
@@ -29,12 +23,12 @@ namespace PDSystem.Device
                 Parameter.P_is_reverse,
                 Parameter.P_is_zero_start,
             },
-            Properties = new()
+            Properties =
             {
                 Property.IN_VALUE,
                 Property.OUT_VALUE,
             },
-            DeviceTags = new()
+            DeviceTags =
             {
                 { Tag.ST, 1 },
                 { Tag.M, 1 },

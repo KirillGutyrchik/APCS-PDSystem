@@ -72,10 +72,10 @@ namespace PDSystem.Device
 
         /// <summary>
         /// val = get[key] - получить значение свойства, если он существует.
-        /// set[key] = val - установить значение параметра, если он сущуствует.
+        /// set[key] = val - установить значение свойства, если он сущуствует.
         /// </summary>
-        /// <param name="parameter">Параметр</param>
-        /// <exception cref="ArgumentException">Параметр не найден</exception>
+        /// <param name="parameter">Свойство</param>
+        /// <exception cref="ArgumentException">Свойство не найдено</exception>
         public object? this[Property property]
         {
             get
@@ -94,6 +94,7 @@ namespace PDSystem.Device
                 if (properties.ContainsKey(property))
                 {
                     properties[property] = value;
+                    OnPropertyChanged?.Invoke();
                 }
                 else
                 {
@@ -125,6 +126,9 @@ namespace PDSystem.Device
         {
             properties = parametersList.ToDictionary<Property, Property, object?>(prop => prop, prop => null);
         }
+
+        public delegate void PropertyChanged();
+        public event PropertyChanged? OnPropertyChanged = null;
 
         private Dictionary<Property, object?> properties = new();
     }
