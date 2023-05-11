@@ -11,7 +11,9 @@ function DevicesInit()
 			return
 		end
 		
-		device:SetParameters(device_table.par or nil)
+		if device_table.par then
+			device:SetParameters(device_table.par)	
+		end
 		
 		SetChannels(device, "DO", device_table.DO or nil)
 		SetChannels(device, "DI", device_table.DI or nil)

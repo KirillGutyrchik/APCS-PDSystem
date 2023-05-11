@@ -19,7 +19,14 @@ namespace PDSystem.Device.DeviceControl
             deviceControlModel.InitializeTreeListView();
         }
 
+        public void Init() => deviceControlModel.InitData();
+
         DeviceControlModel deviceControlModel = DeviceControlModel.Instance;
+
+        private void treeListView_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
+        {
+            e.Item.Font = new Font(FontFamily.GenericMonospace, 8, FontStyle.Bold);
+        }
     }
 
 }

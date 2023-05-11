@@ -13,6 +13,7 @@ namespace PDSystem.Device.DeviceControl
         {
 
         }
+
         private static DeviceControlModel? instance = null;
         public static DeviceControlModel Instance
         {
@@ -29,28 +30,53 @@ namespace PDSystem.Device.DeviceControl
         {
             if (treeListView is null) return;
 
-            //// Настройка цвета отключенного компонента в дереве
-            //var disabletItemStyle = new SimpleItemStyle();
-            //disabletItemStyle.ForeColor = Color.Gray;
-            //
-            //treeListView.DisabledItemStyle = disabletItemStyle;
-            //
-            //// Текст подсветки чередующихся строк
-            //treeListView.AlternateRowBackColor = Color.FromArgb(250, 250, 250);
+            treeListView.CellToolTipGetter = CellToolTipGetter;
+            treeListView.CanExpandGetter = item => (item as IDeviceTreeListItem)?.Items.Count > 0;
+            treeListView.ChildrenGetter = item => (item as IDeviceTreeListItem)?.Items;
 
             var columnHeader_first = new OLVColumn();
             columnHeader_first.Text = "Название";
-
+            columnHeader_first.Sortable = false;
+            columnHeader_first.IsEditable = false;
+            columnHeader_first.AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.FirstColumn;
+            columnHeader_first.ImageGetter = item => 0;
 
             var columnHeader_second = new OLVColumn();
             columnHeader_second.Text = "Описание";
+            columnHeader_second.Sortable = false;
+            columnHeader_second.IsEditable = false;
+            columnHeader_second.AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.SecondColumn;
 
             treeListView.Columns.Add(columnHeader_first);
             treeListView.Columns.Add(columnHeader_second);
         }
 
+        public void InitData()
+        {
+            if (treeListView is null) return;
+
+            treeListView.BeginUpdate();
+            deviceManager.InitDevicesTreeModel();
+            treeListView.Roots = deviceManager.DeviceTree.DeviceTree;
+
+            treeListView.EndUpdate();
+        }
+
+        public string? CellToolTipGetter(OLVColumn column, object displayingObject)
+        {
+            var item = displayingObject as IDeviceTreeListItem;
+            if (item is null) return null;
+
+            return column.Index switch
+            {
+                0 => item.DisplayText.FirstColumn,
+                1 => item.DisplayText.SecondColumn,
+                _ => null,
+            };
+        }
+
         private TreeListView? treeListView = null;
 
-        private DeviceManager deviceManager;
+        private DeviceManager deviceManager = DeviceManager.Instance;
     }
 }

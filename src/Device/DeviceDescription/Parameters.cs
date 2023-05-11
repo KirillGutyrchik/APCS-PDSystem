@@ -270,6 +270,8 @@ namespace PDSystem.Device
 
         }
 
+        public bool Empty => parameters.Any() is false;
+
         /// <summary>
         /// Инициализация параметров по списку параметров, значения = null 
         /// </summary>

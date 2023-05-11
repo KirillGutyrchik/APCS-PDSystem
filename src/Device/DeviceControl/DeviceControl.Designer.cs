@@ -31,35 +31,50 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeviceControl));
             treeListView = new BrightIdeasSoftware.TreeListView();
-            toolStrip1 = new ToolStrip();
+            imageList = new ImageList(components);
+            toolStrip = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)treeListView).BeginInit();
-            toolStrip1.SuspendLayout();
+            toolStrip.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // treeListView
             // 
+            treeListView.AlternateRowBackColor = Color.White;
+            treeListView.BackColor = Color.FromArgb(252, 252, 252);
             treeListView.Dock = DockStyle.Fill;
             treeListView.GridLines = true;
             treeListView.Location = new Point(3, 28);
             treeListView.Name = "treeListView";
             treeListView.ShowGroups = false;
+            treeListView.ShowImagesOnSubItems = true;
             treeListView.Size = new Size(839, 586);
+            treeListView.SmallImageList = imageList;
             treeListView.TabIndex = 0;
+            treeListView.UseAlternatingBackColors = true;
+            treeListView.UseCellFormatEvents = true;
             treeListView.View = View.Details;
             treeListView.VirtualMode = true;
+            treeListView.FormatCell += treeListView_FormatCell;
             // 
-            // toolStrip1
+            // imageList
             // 
-            toolStrip1.Dock = DockStyle.Fill;
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1 });
-            toolStrip1.Location = new Point(0, 0);
-            toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(845, 25);
-            toolStrip1.TabIndex = 1;
-            toolStrip1.Text = "toolStrip1";
+            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
+            imageList.TransparentColor = Color.Transparent;
+            imageList.Images.SetKeyName(0, "setting.png");
+            // 
+            // toolStrip
+            // 
+            toolStrip.Dock = DockStyle.Fill;
+            toolStrip.Items.AddRange(new ToolStripItem[] { toolStripButton1 });
+            toolStrip.Location = new Point(0, 0);
+            toolStrip.Name = "toolStrip";
+            toolStrip.Size = new Size(845, 25);
+            toolStrip.TabIndex = 1;
+            toolStrip.Text = "toolStrip1";
             // 
             // toolStripButton1
             // 
@@ -75,7 +90,7 @@
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(treeListView, 0, 1);
-            tableLayoutPanel1.Controls.Add(toolStrip1, 0, 0);
+            tableLayoutPanel1.Controls.Add(toolStrip, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -93,8 +108,8 @@
             Name = "DeviceControl";
             Size = new Size(845, 617);
             ((System.ComponentModel.ISupportInitialize)treeListView).EndInit();
-            toolStrip1.ResumeLayout(false);
-            toolStrip1.PerformLayout();
+            toolStrip.ResumeLayout(false);
+            toolStrip.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
@@ -103,8 +118,9 @@
         #endregion
 
         private BrightIdeasSoftware.TreeListView treeListView;
-        private ToolStrip toolStrip1;
+        private ToolStrip toolStrip;
         private ToolStripButton toolStripButton1;
         private TableLayoutPanel tableLayoutPanel1;
+        private ImageList imageList;
     }
 }

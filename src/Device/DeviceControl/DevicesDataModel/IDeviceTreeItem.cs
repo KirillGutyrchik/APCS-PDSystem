@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device.DeviceControl
 {
-    interface IDeviceTreeListItem
+    public interface IDeviceTreeListItem
     {
         (string FirstColumn, string SecondColumn) DisplayText { get; }
 
@@ -14,7 +14,7 @@ namespace PDSystem.Device.DeviceControl
 
         bool IsEditable { get; }
 
-        List<IDeviceTreeListItem?> Items { get; }
+        List<IDeviceTreeListItem>? Items { get; }
 
         IDeviceTreeListItem? Parent { get; }
     }

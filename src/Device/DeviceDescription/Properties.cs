@@ -69,6 +69,12 @@ namespace PDSystem.Device
 
     public class DeviceProperties
     {
+        public DeviceProperties CloneTemplate() => new DeviceProperties(ToList());
+
+        public DeviceProperties()
+        {
+
+        }
 
         /// <summary>
         /// val = get[key] - получить значение свойства, если он существует.
@@ -111,13 +117,6 @@ namespace PDSystem.Device
             return properties.Select(property => property.Key).ToList();
         }
 
-        public DeviceProperties CloneTemplate() => new DeviceProperties(ToList());
-
-        public DeviceProperties()
-        {
-
-        }
-
         /// <summary>
         /// Конструктор для инициализации свойств из списка свойств
         /// </summary>
@@ -126,6 +125,8 @@ namespace PDSystem.Device
         {
             properties = parametersList.ToDictionary<Property, Property, object?>(prop => prop, prop => null);
         }
+
+        public bool Empty => properties.Any() is false;
 
         public delegate void PropertyChanged();
         public event PropertyChanged? OnPropertyChanged = null;

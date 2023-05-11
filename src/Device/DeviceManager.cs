@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PDSystem.Device.DeviceControl;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,9 +48,6 @@ namespace PDSystem.Device
 
         private Device? AddDevice(DeviceType type, DeviceSubType subType, DeviceInfo deviceInfo)
         {
-            
-
-            
             var device = DeviceCreator[type](subType, deviceInfo);
 
             devices.Add(device);
@@ -78,8 +76,21 @@ namespace PDSystem.Device
             return AddDevice(type, subType, deviceInfo);
         }
 
+        public void InitDevicesTreeModel()
+        {
+            foreach (var device in devices)
+            {
+                deviceTree.AddDevice(device);
+            }
+        }
+
+        public List<Device> Devices => devices;
+        public DevicesTreeModel DeviceTree => deviceTree;
+
+
 
         private static DeviceManager? instance = null;
         private List<Device> devices = new();
+        private DevicesTreeModel deviceTree = new();
     }
 }

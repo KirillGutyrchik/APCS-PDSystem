@@ -9,22 +9,23 @@ namespace PDSystem.LUA
     public class LuaDeviceReader
     {
         private static readonly string DeviceReaderLuaFileName = "Lua\\device_reader.lua";
+        private static readonly string LuaMainFunctionName = "DevicesInit";
+        private static readonly string LuaDeviceManagerName = "DeviceManager";
+
 
         public LuaDeviceReader()
         {
-
-            //LuaManager.Instance.Lua.DoFile("C:\\Users\\gutyr\\Desktop\\ptusa_test_prj\\main.io.lua");
-            LuaManager.Instance.Lua.DoString(System.IO.File.ReadAllText("C:\\Users\\gutyr\\Desktop\\ptusa_test_prj\\main.io.lua", Encoding.UTF8));
+            LuaManager.Instance.Lua.DoString(System.IO.File.ReadAllText("C:\\Users\\asu10\\Desktop\\Test\\main.io.lua", Encoding.UTF8));
 
             LuaManager.Instance.Lua.DoFile(Path.Combine(Path.GetDirectoryName(Assembly
                 .GetExecutingAssembly().Location) ?? "", DeviceReaderLuaFileName));
 
-            LuaManager.Instance.Lua["DeviceManager"] = new LuaDeviceManager();
+            LuaManager.Instance.Lua[LuaDeviceManagerName] = new LuaDeviceManager();
         }
 
         public void InitDevices()
         {
-            LuaFunction? init_devices = LuaManager.Instance.Lua["DevicesInit"] as LuaFunction;
+            LuaFunction? init_devices = LuaManager.Instance.Lua[LuaMainFunctionName] as LuaFunction;
             init_devices?.Call();
         }
 
@@ -52,10 +53,8 @@ namespace PDSystem.LUA
                     tagDevice = device;
                 }
 
-                public void SetParameters(LuaTable? parameters)
+                public void SetParameters(LuaTable parameters)
                 {
-                    if (parameters is null) return;
-
                     int parameterIndex = 0;
                     foreach (var parameter in parameters.Values)
                     {
