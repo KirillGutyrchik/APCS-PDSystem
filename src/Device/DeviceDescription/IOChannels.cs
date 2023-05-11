@@ -72,7 +72,9 @@ namespace PDSystem.Device
 
         public int ModuleOffset => moduleOffset;
 
-        public void SetChannelBinding(int node, int offset, int physical_port, int logical_port, int module_offset)
+        public void SetChannel(
+            int node, int offset, int physical_port,
+            int logical_port, int module_offset)
         {
             this.node = node;
             this.offset = offset;

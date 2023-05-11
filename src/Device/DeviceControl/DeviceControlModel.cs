@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,44 @@ namespace PDSystem.Device.DeviceControl
         {
 
         }
-        private static DeviceControlModel? _instance = null;
+        private static DeviceControlModel? instance = null;
         public static DeviceControlModel Instance
         {
-            get => _instance ??= new DeviceControlModel();
+            get => instance ??= new DeviceControlModel();
         }
 
 
-        private DeviceManager _deviceManager;
+        public void SetTreeListView(TreeListView tlv)
+        {
+            treeListView = tlv;
+        }
+
+        public void InitializeTreeListView()
+        {
+            if (treeListView is null) return;
+
+            //// Настройка цвета отключенного компонента в дереве
+            //var disabletItemStyle = new SimpleItemStyle();
+            //disabletItemStyle.ForeColor = Color.Gray;
+            //
+            //treeListView.DisabledItemStyle = disabletItemStyle;
+            //
+            //// Текст подсветки чередующихся строк
+            //treeListView.AlternateRowBackColor = Color.FromArgb(250, 250, 250);
+
+            var columnHeader_first = new OLVColumn();
+            columnHeader_first.Text = "Название";
+
+
+            var columnHeader_second = new OLVColumn();
+            columnHeader_second.Text = "Описание";
+
+            treeListView.Columns.Add(columnHeader_first);
+            treeListView.Columns.Add(columnHeader_second);
+        }
+
+        private TreeListView? treeListView = null;
+
+        private DeviceManager deviceManager;
     }
 }

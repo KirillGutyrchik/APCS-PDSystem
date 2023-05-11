@@ -15,6 +15,11 @@ namespace PDSystem.Device.DeviceControl
         public DeviceControl()
         {
             InitializeComponent();
+            deviceControlModel.SetTreeListView(treeListView);
+            deviceControlModel.InitializeTreeListView();
         }
+
+        DeviceControlModel deviceControlModel = DeviceControlModel.Instance;
     }
+
 }

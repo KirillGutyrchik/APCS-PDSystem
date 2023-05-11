@@ -136,21 +136,6 @@ namespace PDSystem.Device
 
         #endregion
 
-        #region Lua-функции
-        public void SetParameters(LuaTable? parameters)
-        {
-            if (parameters is null) return;
-
-            int parameterIndex = 0;
-            foreach (var parameter in parameters.Values)
-            {
-                Parameters[parameterIndex++] = parameter;
-            }
-        }
-
-        public IOChannel[] GetChannels(string channelType) => deviceDescription.Channels.Where(ch => ch.Name == channelType).ToArray();
-
-        #endregion
 
         /// <summary>
         /// Сравнение объектов для сортировки.
