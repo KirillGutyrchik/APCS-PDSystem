@@ -33,10 +33,10 @@ namespace PDSystemTests.DeviceTests.DevicesTest
             Device device = Creator(subType);
             Assert.Multiple(() =>
             {
-                Assert.That(device.DI, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.DI, 0)));
-                Assert.That(device.DO, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.DO, 0)));
-                Assert.That(device.AI, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.AI, 0)));
-                Assert.That(device.AO, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.AO, 0)));
+                Assert.That(device.Channels.DI, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.DI, 0)));
+                Assert.That(device.Channels.DO, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.DO, 0)));
+                Assert.That(device.Channels.AI, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.AI, 0)));
+                Assert.That(device.Channels.AO, Has.Count.EqualTo(expectedChannels.GetValueOrDefault(ChannelType.AO, 0)));
             });
         }
 

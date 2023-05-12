@@ -1,4 +1,5 @@
 ﻿using PDSystem.Device.DeviceControl;
+using PDSystem.Ext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device
 {
-    public class DeviceManager
+    public class DeviceManager : ISaveToLua
     {
         private static readonly Dictionary<DeviceType, Func<DeviceSubType, DeviceInfo, Device>> DeviceCreator = new()
         {
@@ -82,6 +83,21 @@ namespace PDSystem.Device
             {
                 deviceTree.AddDevice(device);
             }
+        }
+
+        public StringBuilder SaveAsLuaTable(string prefix)
+        {
+            var result = new StringBuilder();
+            result.Append("------------------------------------------------------------------------------\n")
+                .Append($"{prefix}--Устройства\n")
+                .Append($"{prefix}devices =\n")
+                .Append($"{prefix}\t{{\n");
+
+            devices.ForEach( device => { result.Append(device.ToString()); });
+
+            result.Append($"{prefix}\t}}\n");
+
+            return result;
         }
 
         public List<Device> Devices => devices;

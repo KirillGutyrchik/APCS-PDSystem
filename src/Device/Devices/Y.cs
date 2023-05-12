@@ -46,5 +46,11 @@
         {
 
         }
+
+        // Данное устройство не сохраняется
+        public override StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            return new StringBuilder();
+        }
     }
 }

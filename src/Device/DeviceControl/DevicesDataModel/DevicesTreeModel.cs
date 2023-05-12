@@ -27,6 +27,6 @@ namespace PDSystem.Device.DeviceControl
 
         public List<IDeviceTreeListItem> DeviceTree => deviceTree.Cast<IDeviceTreeListItem>().ToList(); 
 
-        private List<DeviceTypeContainer> deviceTree = new();
+        private List<DeviceTypeItem> deviceTree = new();
     }
 }

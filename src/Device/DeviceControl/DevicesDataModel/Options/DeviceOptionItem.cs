@@ -10,20 +10,22 @@
         public virtual IconIndex IconIndex => IconIndex.NONE;
         public abstract bool IsEditable { get; }
 
-        public virtual List<IDeviceTreeListItem>? Items => emptyItem;
+        public List<IDeviceTreeListItem>? Items => null;
 
-        public virtual IDeviceTreeListItem? Parent => parent;
+        public virtual IDeviceTreeListItem? Parent
+        {
+            get => parent;
+            set => parent = value as DeviceOptionsItem ?? throw new ArgumentNullException();
+        }
         #endregion
 
-        public Device Device => parent.Device;
+        public Device? Device => parent.Device;
 
-        public DeviceOptionItem(DeviceOptionsContainer parent)
+        public DeviceOptionItem(DeviceOptionsItem parent)
         {
             this.parent = parent;
         }
 
-        private List<IDeviceTreeListItem> emptyItem = new();
-
-        protected DeviceOptionsContainer parent; 
+        protected DeviceOptionsItem parent; 
     }
 }

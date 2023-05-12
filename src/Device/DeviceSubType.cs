@@ -101,10 +101,8 @@ namespace PDSystem.Device
             Parameters = new DeviceParameters(this.Parameters),
             RuntimeParameters = new DeviceRuntimeParameters(this.RuntimeParameters),
             Properties = new DeviceProperties(this.Properties),
-            Channels = this.Channels.AO.Select(comment => new IOChannel(ChannelType.AO, comment))
-                .Concat(this.Channels.AI.Select(comment => new IOChannel(ChannelType.AI, comment)))
-                .Concat(this.Channels.DO.Select(comment => new IOChannel(ChannelType.DO, comment)))
-                .Concat(this.Channels.DI.Select(comment => new IOChannel(ChannelType.DI, comment))).ToList(),
+            Channels = new DeviceChannels(Channels.DO, Channels.DI, Channels.AO, Channels.AI),
+            
             DeviceTags = this.DeviceTags.ToImmutableDictionary(),
         };
 

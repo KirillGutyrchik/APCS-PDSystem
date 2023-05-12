@@ -1,4 +1,5 @@
 ﻿using LuaInterface;
+using PDSystem.Ext;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace PDSystem.Device
         void SetIolConfProperty(string propertyName, double value);
     }
 
-    public abstract class Device : IComparable<Device>, IEquatable<Device>, IDevice
+    public abstract class Device : IComparable<Device>, IEquatable<Device>, IDevice, ISaveToLua
     {
         /// <param name="subType"> Подтип устройства</param>
         /// <param name="cadName"> САПр имя устройства (+OBJ1-DEV2) </param>
@@ -118,22 +119,9 @@ namespace PDSystem.Device
         public DeviceProperties Properties => deviceDescription.Properties;
 
         /// <summary> Каналы </summary>
-        public List<IOChannel> Channels => deviceDescription.Channels;
+        public DeviceChannels Channels => deviceDescription.Channels;
 
         public virtual ImmutableDictionary<string, int> DeviceTags => deviceDescription.DeviceTags;
-
-        /// <summary> Входные аналоговые каналы </summary>
-        public List<IOChannel> AI => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.AI).ToList();
-
-        /// <summary> Выходные аналоговые каналы </summary>
-        public List<IOChannel> AO => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.AO).ToList();
-
-        /// <summary> Входные дискретные каналы </summary>
-        public List<IOChannel> DI => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.DI).ToList();
-
-        /// <summary> Выходные дискретные каналы </summary>
-        public List<IOChannel> DO => deviceDescription.Channels.Where(ch => ch.ChannelType == ChannelType.DO).ToList();
-
         #endregion
 
 
@@ -201,6 +189,22 @@ namespace PDSystem.Device
             throw new NotImplementedException();
         }
 
+        public virtual StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            var result = new StringBuilder();
+
+            result
+                .Append($"{prefix}{{\n")
+                .Append($"{prefix}name    = '{Name}',\n")
+                .Append($"{prefix}descr   = '{Description}',\n")
+                .Append($"{prefix}dtype   = '{DeviceType.Id}',\n")
+                .Append($"{prefix}subtype = '{DeviceSubType.Id}', -- {DeviceSubType.Name}\n")
+                .Append($"{prefix}article = '{ArticleName}',\n")
+                .Append(deviceDescription.SaveAsLuaTable(prefix))
+                .Append($"{prefix}}},\n\n");
+
+            return result;
+        }
 
         protected DeviceType? deviceType = null;
         protected DeviceSubType deviceSubType;

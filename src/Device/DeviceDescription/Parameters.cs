@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PDSystem.Ext;
+using System.Collections;
 using System.Collections.Immutable;
 using System.Data.Common;
 using System.Linq.Expressions;
@@ -205,7 +206,7 @@ namespace PDSystem.Device
     /// Установить параметр: this[parameter] = value.
     /// Добавление новых параметров доступно только при инициализации.
     /// </remarks> 
-    public class DeviceParameters
+    public class DeviceParameters : ISaveToLua
     {
         /// <summary>
         /// val = get[key] - получить значение параметра, если он существует.
@@ -264,6 +265,22 @@ namespace PDSystem.Device
         /// <param name="parameter">Параметр</param>
         /// <returns>true if contains parameter</returns>
         public bool ContainsParameter(Parameter parameter) => parameters.ContainsKey(parameter);
+
+        public StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            var result = new StringBuilder();
+
+            if (parameters.Any() is false) return result;
+
+            result.Append($"{prefix}par = {{");
+
+            foreach (var parameter in parameters)
+            {
+                result.Append($"{parameter.Value} --[[{parameter.Key.Name}]],");
+            }
+
+            return result.Append($"}},\n");
+        }
 
         public DeviceParameters()
         {

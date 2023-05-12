@@ -66,7 +66,7 @@ namespace PDSystem.LUA
                     int node, int offset, int physical_port,
                     int logical_port, int module_offset)
                 {
-                    tagDevice.Channels.Where(channel => channel.Name == channelType).ToArray()
+                    tagDevice.Channels.AllChannels.Where(channel => channel.Name == channelType).ToArray()
                         [index].SetChannel(node, offset, physical_port, logical_port, module_offset);
                 }
             }

@@ -34,21 +34,44 @@ namespace PDSystem.Device.DeviceControl
             treeListView.CanExpandGetter = item => (item as IDeviceTreeListItem)?.Items?.Count > 0;
             treeListView.ChildrenGetter = item => (item as IDeviceTreeListItem)?.Items;
 
-            var columnHeader_first = new OLVColumn();
-            columnHeader_first.Text = "Название";
-            columnHeader_first.Sortable = false;
-            columnHeader_first.IsEditable = false;
-            columnHeader_first.AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.FirstColumn;
-            columnHeader_first.ImageGetter = item => (int)(item as IDeviceTreeListItem)?.IconIndex;
+            treeListView.Expanded += TreeListView_ExpandedOrCollapsed;
+            treeListView.Collapsed += TreeListView_ExpandedOrCollapsed;
 
-            var columnHeader_second = new OLVColumn();
-            columnHeader_second.Text = "Описание";
-            columnHeader_second.Sortable = false;
-            columnHeader_second.IsEditable = false;
-            columnHeader_second.AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.SecondColumn;
+            treeListView.FormatCell += TreeListView_FormatCell;
+
+            var columnHeader_first = new OLVColumn
+            {
+                Text = "Название",
+                MinimumWidth = 100,
+                Sortable = false,
+                IsEditable = false,
+                AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.FirstColumn,
+                ImageGetter = item => (int)((item as IDeviceTreeListItem)?.IconIndex ?? IconIndex.NONE),
+            };
+
+            var columnHeader_second = new OLVColumn
+            {
+                Text = "Описание",
+                MinimumWidth = 100,
+                Sortable = false,
+                IsEditable = false,
+                AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.SecondColumn,
+            };
+
 
             treeListView.Columns.Add(columnHeader_first);
             treeListView.Columns.Add(columnHeader_second);
+        }
+
+        private void TreeListView_FormatCell(object? sender, FormatCellEventArgs e)
+        {
+            e.Item.Font = new Font(FontFamily.GenericMonospace, 8, FontStyle.Bold);
+        }
+
+        private void TreeListView_ExpandedOrCollapsed(object? sender, EventArgs e)
+        {
+            treeListView?.Columns[0].AutoResize(
+                ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         public void InitData()

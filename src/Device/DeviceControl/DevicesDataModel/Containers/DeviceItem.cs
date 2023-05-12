@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PDSystem.Device.DeviceControl.DevicesDataModel.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,24 +8,16 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device.DeviceControl
 {
-    public class DeviceItem : IDeviceTreeListItem
+    public class DeviceItem : DeviceTreeListItem
     {
-        #region Реализация IDeviceTreeListItem
-        public (string FirstColumn, string SecondColumn) DisplayText 
+        #region DeviceTreeListItem
+        public override (string FirstColumn, string SecondColumn) DisplayText
             => ($"{device.DeviceType.Name}{device.DeviceNumber} {device.Description}", string.Empty);
 
-        public string EditText => string.Empty;
-
-        public IconIndex IconIndex => IconIndex.NONE;
-
-        public bool IsEditable => false;
-
-        List<IDeviceTreeListItem> IDeviceTreeListItem.Items => items;
-
-        IDeviceTreeListItem? IDeviceTreeListItem.Parent => parent;
+        public override List<IDeviceTreeListItem> Items => items;
         #endregion
 
-        public DeviceItem(Device device, DeviceObjectContainer parent)
+        public DeviceItem(Device device, DeviceObjectItem parent)
         {
             this.device = device;
             this.parent = parent;
@@ -37,22 +30,22 @@ namespace PDSystem.Device.DeviceControl
 
         private void InitDeviceItemInfo()
         {
-            var infoContainer = new DeviceOptionsContainer("Описание", IconIndex.Description, this);
+            var infoContainer = new DeviceOptionsItem("Описание", IconIndex.Description, this);
 
             infoContainer.AddOptionItem(new DeviceItemInfo("Подтип", device.DeviceSubType.Name, infoContainer));
-            infoContainer.AddOptionItem(new DeviceItemInfo("Изделие", device.ArticleName, infoContainer));
             infoContainer.AddOptionItem(new DeviceItemInfo("Описание", device.Description, infoContainer));
+            infoContainer.AddOptionItem(new DeviceItemInfo("Изделие", device.ArticleName, infoContainer));
 
             items.Add(infoContainer);
         }
 
         private void InitDeviceItemChannels()
         {
-            if (device.Channels.Any() is false) return;
+            if (device.Channels.AllChannels.Any() is false) return;
 
-            var channelsContainer = new DeviceOptionsContainer("Каналы", IconIndex.NONE, this);
+            var channelsContainer = new DeviceOptionsItem("Каналы", IconIndex.NONE, this);
 
-            foreach (var channel in device.Channels)
+            foreach (var channel in device.Channels.AllChannels)
             {
                 channelsContainer.AddOptionItem(new DeviceChannelItem(channel, channelsContainer));
             }
@@ -64,7 +57,7 @@ namespace PDSystem.Device.DeviceControl
         {
             if (device.Parameters.Empty) return;
 
-            var patametersContainer = new DeviceOptionsContainer("Параметры", IconIndex.Parameters, this);
+            var patametersContainer = new DeviceOptionsItem("Параметры", IconIndex.Parameters, this);
 
             foreach (var parameter in device.Parameters.ToList())
             {
@@ -79,9 +72,9 @@ namespace PDSystem.Device.DeviceControl
         {
             if (device.Properties.Empty) return;
 
-            var propertiesContainer = new DeviceOptionsContainer("Свойства", IconIndex.Properties, this);
+            var propertiesContainer = new DeviceOptionsItem("Свойства", IconIndex.Properties, this);
 
-            foreach(var property in device.Properties.ToList())
+            foreach (var property in device.Properties.ToList())
             {
                 propertiesContainer.AddOptionItem(
                     new DevicePropertyItem(property, device.Properties[property], propertiesContainer));
@@ -96,6 +89,6 @@ namespace PDSystem.Device.DeviceControl
 
         private List<IDeviceTreeListItem> items = new();
         private Device device;
-        private DeviceObjectContainer parent;
+        private DeviceObjectItem parent;
     }
 }

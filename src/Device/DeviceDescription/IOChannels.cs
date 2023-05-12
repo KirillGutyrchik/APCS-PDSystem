@@ -41,7 +41,7 @@ namespace PDSystem.Device
         int FullModule { get; }
     }
 
-    public class IOChannel : IIOChannel
+    public class IOChannel : IIOChannel, ISaveToLua
     {
 
         /// <param name="channelType">Тип канала</param>
@@ -83,6 +83,19 @@ namespace PDSystem.Device
             this.moduleOffset = module_offset;
         }
 
+        public StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            return new StringBuilder()
+                .Append($"{prefix}{{\n")
+                .Append($"{prefix}-- {comment}\n")
+                .Append($"{prefix}node          = {Node},\n")
+                .Append($"{prefix}offset        = {Offset},\n")
+                .Append($"{prefix}physical_port = {PhysicalClamp},\n")
+                .Append($"{prefix}logical_port  = {LogicalClamp},\n")
+                .Append($"{prefix}module_offset = {ModuleOffset},\n")
+                .Append($"{prefix}}},\n");
+        }
+
         public ChannelType ChannelType
         {
             get
@@ -109,5 +122,60 @@ namespace PDSystem.Device
         private int logicalClamp;
         /// <summary> Сдвиг начала модуля. </summary>
         private int moduleOffset;
+    }
+
+    public class DeviceChannels : ISaveToLua
+    {
+
+        public DeviceChannels()
+        {
+
+        }
+
+        public DeviceChannels(List<string> DO, List<string> DI, List<string> AO, List<string> AI) 
+        {
+            channels.DO = DO.Select(comment => new IOChannel(ChannelType.DO, comment)).ToList();
+            channels.DI = DI.Select(comment => new IOChannel(ChannelType.DI, comment)).ToList();
+            channels.AO = AO.Select(comment => new IOChannel(ChannelType.AO, comment)).ToList();
+            channels.AI = AI.Select(comment => new IOChannel(ChannelType.AI, comment)).ToList();
+        }
+
+        public StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            return new StringBuilder()
+                .Append(SaveChannels(prefix, "DO", DO))
+                .Append(SaveChannels(prefix, "DI", DI))
+                .Append(SaveChannels(prefix, "AO", AO))
+                .Append(SaveChannels(prefix, "AI", AI));
+        }
+
+        private StringBuilder SaveChannels(string prefix, string name, List<IOChannel> channels)
+        {
+            var result = new StringBuilder();
+            if (channels.Any() is false) return result;
+
+            result .Append($"{prefix}{name} =\n")
+                .Append($"{prefix}\t{{\n");
+
+            foreach (var channel in channels)
+            {
+                result.Append(channel.SaveAsLuaTable(prefix + "\t\t"));
+            }
+
+            return result.Append($"{prefix}\t}},\n");
+        }
+
+        public List<IOChannel> DO => channels.DO;
+
+        public List<IOChannel> DI => channels.DI;
+
+        public List<IOChannel> AO => channels.AO;
+
+        public List<IOChannel> AI => channels.AI;
+
+        public List<IOChannel> AllChannels 
+            => channels.DO.Concat(channels.DI).Concat(channels.AO).Concat(channels.AI).ToList();
+
+        private (List<IOChannel> DO, List<IOChannel> DI, List<IOChannel> AO, List<IOChannel> AI) channels;
     }
 }

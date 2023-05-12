@@ -1,15 +1,15 @@
-﻿namespace PDSystem.Device.DeviceControl
+﻿namespace PDSystem.Device.DeviceControl.DevicesDataModel.Options
 {
     public class DeviceParameterItem : DeviceOptionItem
     {
-        public override (string FirstColumn, string SecondColumn) DisplayText 
+        public override (string FirstColumn, string SecondColumn) DisplayText
             => ($"{parameter.Name}", $"{EditText}");
 
         public override string EditText => value?.ToString() ?? string.Empty;
 
         public override bool IsEditable => true;
 
-        public DeviceParameterItem(Parameter parameter, object? value, DeviceOptionsContainer parent) 
+        public DeviceParameterItem(Parameter parameter, object? value, DeviceOptionsItem parent)
             : base(parent)
         {
             this.parameter = parameter;

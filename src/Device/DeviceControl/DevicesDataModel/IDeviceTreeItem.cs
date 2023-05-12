@@ -18,6 +18,6 @@ namespace PDSystem.Device.DeviceControl
 
         List<IDeviceTreeListItem>? Items { get; }
 
-        IDeviceTreeListItem? Parent { get; }
+        IDeviceTreeListItem? Parent { get; set; }
     }
 }

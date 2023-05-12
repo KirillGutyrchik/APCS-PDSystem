@@ -57,7 +57,6 @@
             treeListView.UseCellFormatEvents = true;
             treeListView.View = View.Details;
             treeListView.VirtualMode = true;
-            treeListView.FormatCell += treeListView_FormatCell;
             // 
             // imageList
             // 

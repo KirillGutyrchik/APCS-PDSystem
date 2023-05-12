@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PDSystem.Ext;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device
 {
-    public class DeviceDescription
+    public class DeviceDescription : ISaveToLua
     {
         /// <summary>
         /// Клонирование описания
@@ -21,12 +22,24 @@ namespace PDSystem.Device
             {
                 Parameters = parameters?.CloneTemplate() ?? new(),
                 Properties = properties?.CloneTemplate() ?? new(),
-                Channels = channels?.Select(ch => new IOChannel(ch.ChannelType, ch.Comment)).ToList() ?? new(),
+                //Channels = channels?.Select(ch => new IOChannel(ch.ChannelType, ch.Comment)).ToList() ?? new(),
                 DeviceTags = deviceTags ?? new Dictionary<string, int>().ToImmutableDictionary(),
             };
         }
 
-        public List<IOChannel> Channels
+        public StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            var result = new StringBuilder();
+
+            result
+                //.Append()
+                .Append(Channels.SaveAsLuaTable(prefix));
+
+
+            return result;
+        }
+
+        public DeviceChannels Channels
         {
             get => channels ?? new();
             set => channels ??= value;
@@ -62,7 +75,7 @@ namespace PDSystem.Device
             set => deviceTags ??= value;
         }
 
-        private List<IOChannel>? channels;
+        private DeviceChannels? channels;
         private DeviceParameters? parameters;
         private DeviceRuntimeParameters? runtimeParameters;
         private DeviceProperties? properties;

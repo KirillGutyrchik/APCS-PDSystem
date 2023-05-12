@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PDSystem.Ext;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,7 +68,7 @@ namespace PDSystem.Device
         private string description;
     }
 
-    public class DeviceProperties
+    public class DeviceProperties : ISaveToLua
     {
         public DeviceProperties CloneTemplate() => new DeviceProperties(ToList());
 
@@ -115,6 +116,38 @@ namespace PDSystem.Device
         public List<Property> ToList()
         {
             return properties.Select(property => property.Key).ToList();
+        }
+
+        public StringBuilder SaveAsLuaTable(string prefix = "")
+        {
+            var result = new StringBuilder();
+
+            if (properties.Any() is false) return result;
+
+            result
+                .Append($"{prefix}prop = --Дополнительные свойства\n")
+                .Append($"{prefix}\t{{\n");
+
+            foreach (var property in properties)
+            {
+                result.Append($"{prefix}\t{property.Key.Name} = {SavePropertyValue(property.Value)},\n");
+            }
+
+            return result.Append($"{prefix}\t}},\n");
+        }
+
+        public string SavePropertyValue(object? objectValue)
+        {
+            if (objectValue is null) return string.Empty;
+
+            string value = objectValue.ToString() ?? string.Empty;
+
+            if (double.TryParse(value, out var result ))
+            {
+                return value;
+            }
+
+            return $"'{value}'";
         }
 
         /// <summary>
