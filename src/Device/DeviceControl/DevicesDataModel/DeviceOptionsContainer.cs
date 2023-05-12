@@ -8,10 +8,20 @@ namespace PDSystem.Device.DeviceControl
 {
     public class DeviceOptionsContainer : IDeviceTreeListItem
     {
+        public DeviceOptionsContainer(string name, IconIndex icon, DeviceItem parent)
+        {
+            this.name = name;
+            this.icon = icon;
+            this.parent = parent;
+        }
+
         #region Реализция IDeviceTreeListItem
         public (string FirstColumn, string SecondColumn) DisplayText => ($"{name} ({items.Count})", string.Empty);
 
         public string EditText => string.Empty;
+
+
+        public virtual IconIndex IconIndex => icon;
 
         public bool IsEditable => false;
 
@@ -23,11 +33,7 @@ namespace PDSystem.Device.DeviceControl
 
         public Device Device => parent.Device;
 
-        public DeviceOptionsContainer(string name, DeviceItem parent) 
-        {
-            this.name = name;
-            this.parent = parent;
-        }
+        
 
         public void AddOptionItem(DeviceOptionItem item)
         {
@@ -37,5 +43,6 @@ namespace PDSystem.Device.DeviceControl
         private List<DeviceOptionItem> items = new();
         private DeviceItem parent;
         private string name;
+        private IconIndex icon;
     }
 }

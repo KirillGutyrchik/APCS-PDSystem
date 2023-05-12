@@ -64,7 +64,9 @@
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
             imageList.TransparentColor = Color.Transparent;
-            imageList.Images.SetKeyName(0, "setting.png");
+            imageList.Images.SetKeyName(0, "description.ico");
+            imageList.Images.SetKeyName(1, "parameters.ico");
+            imageList.Images.SetKeyName(2, "settings.ico");
             // 
             // toolStrip
             // 

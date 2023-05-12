@@ -14,6 +14,8 @@ namespace PDSystem.Device.DeviceControl
 
         bool IsEditable { get; }
 
+        IconIndex IconIndex { get; }
+
         List<IDeviceTreeListItem>? Items { get; }
 
         IDeviceTreeListItem? Parent { get; }

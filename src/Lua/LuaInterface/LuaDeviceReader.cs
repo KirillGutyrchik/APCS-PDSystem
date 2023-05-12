@@ -13,9 +13,9 @@ namespace PDSystem.LUA
         private static readonly string LuaDeviceManagerName = "DeviceManager";
 
 
-        public LuaDeviceReader()
+        public LuaDeviceReader(string path)
         {
-            LuaManager.Instance.Lua.DoString(System.IO.File.ReadAllText("C:\\Users\\asu10\\Desktop\\Test\\main.io.lua", Encoding.UTF8));
+            LuaManager.Instance.Lua.DoString(System.IO.File.ReadAllText(path, Encoding.UTF8));
 
             LuaManager.Instance.Lua.DoFile(Path.Combine(Path.GetDirectoryName(Assembly
                 .GetExecutingAssembly().Location) ?? "", DeviceReaderLuaFileName));

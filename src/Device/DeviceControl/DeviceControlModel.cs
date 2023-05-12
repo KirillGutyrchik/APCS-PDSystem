@@ -31,7 +31,7 @@ namespace PDSystem.Device.DeviceControl
             if (treeListView is null) return;
 
             treeListView.CellToolTipGetter = CellToolTipGetter;
-            treeListView.CanExpandGetter = item => (item as IDeviceTreeListItem)?.Items.Count > 0;
+            treeListView.CanExpandGetter = item => (item as IDeviceTreeListItem)?.Items?.Count > 0;
             treeListView.ChildrenGetter = item => (item as IDeviceTreeListItem)?.Items;
 
             var columnHeader_first = new OLVColumn();
@@ -39,7 +39,7 @@ namespace PDSystem.Device.DeviceControl
             columnHeader_first.Sortable = false;
             columnHeader_first.IsEditable = false;
             columnHeader_first.AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.FirstColumn;
-            columnHeader_first.ImageGetter = item => 0;
+            columnHeader_first.ImageGetter = item => (int)(item as IDeviceTreeListItem)?.IconIndex;
 
             var columnHeader_second = new OLVColumn();
             columnHeader_second.Text = "Описание";

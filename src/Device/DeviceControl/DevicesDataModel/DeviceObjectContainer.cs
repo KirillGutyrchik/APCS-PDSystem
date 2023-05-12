@@ -8,11 +8,19 @@ namespace PDSystem.Device.DeviceControl
 {
     public class DeviceObjectContainer : IDeviceTreeListItem
     {
+        public DeviceObjectContainer(string name, DeviceTypeContainer parent)
+        {
+            this.parent = parent;
+            this.name = name;
+        }
+
+
         #region реализация IDeviceTreeListItem
         public (string FirstColumn, string SecondColumn) DisplayText => ($"{name} ({items.Count})", string.Empty);
 
         public string EditText => string.Empty;
 
+        public IconIndex IconIndex => IconIndex.NONE;
         public bool IsEditable => false;
 
         List<IDeviceTreeListItem> IDeviceTreeListItem.Items => items.Cast<IDeviceTreeListItem>().ToList();
@@ -21,11 +29,7 @@ namespace PDSystem.Device.DeviceControl
         #endregion
 
 
-        public DeviceObjectContainer(string name, DeviceTypeContainer parent)
-        {
-            this.parent = parent;
-            this.name = name;
-        }
+       
 
         public void AddDevice(Device device)
         {
@@ -33,6 +37,8 @@ namespace PDSystem.Device.DeviceControl
         }
 
         public string Name => name;
+
+        
 
         private DeviceTypeContainer parent;
         private List<DeviceItem> items = new();

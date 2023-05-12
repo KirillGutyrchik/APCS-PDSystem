@@ -7,6 +7,7 @@
 
         public abstract string EditText { get; }
 
+        public virtual IconIndex IconIndex => IconIndex.NONE;
         public abstract bool IsEditable { get; }
 
         public virtual List<IDeviceTreeListItem>? Items => emptyItem;

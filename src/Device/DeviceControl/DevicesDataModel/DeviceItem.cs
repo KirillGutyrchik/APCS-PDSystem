@@ -15,6 +15,8 @@ namespace PDSystem.Device.DeviceControl
 
         public string EditText => string.Empty;
 
+        public IconIndex IconIndex => IconIndex.NONE;
+
         public bool IsEditable => false;
 
         List<IDeviceTreeListItem> IDeviceTreeListItem.Items => items;
@@ -35,7 +37,7 @@ namespace PDSystem.Device.DeviceControl
 
         private void InitDeviceItemInfo()
         {
-            var infoContainer = new DeviceOptionsContainer("Описание", this);
+            var infoContainer = new DeviceOptionsContainer("Описание", IconIndex.Description, this);
 
             infoContainer.AddOptionItem(new DeviceItemInfo("Подтип", device.DeviceSubType.Name, infoContainer));
             infoContainer.AddOptionItem(new DeviceItemInfo("Изделие", device.ArticleName, infoContainer));
@@ -48,7 +50,7 @@ namespace PDSystem.Device.DeviceControl
         {
             if (device.Channels.Any() is false) return;
 
-            var channelsContainer = new DeviceOptionsContainer("Каналы", this);
+            var channelsContainer = new DeviceOptionsContainer("Каналы", IconIndex.NONE, this);
 
             foreach (var channel in device.Channels)
             {
@@ -62,7 +64,7 @@ namespace PDSystem.Device.DeviceControl
         {
             if (device.Parameters.Empty) return;
 
-            var patametersContainer = new DeviceOptionsContainer("Параметры", this);
+            var patametersContainer = new DeviceOptionsContainer("Параметры", IconIndex.Parameters, this);
 
             foreach (var parameter in device.Parameters.ToList())
             {
@@ -77,7 +79,7 @@ namespace PDSystem.Device.DeviceControl
         {
             if (device.Properties.Empty) return;
 
-            var propertiesContainer = new DeviceOptionsContainer("Свойства", this);
+            var propertiesContainer = new DeviceOptionsContainer("Свойства", IconIndex.Properties, this);
 
             foreach(var property in device.Properties.ToList())
             {
@@ -89,6 +91,8 @@ namespace PDSystem.Device.DeviceControl
         }
 
         public Device Device => device;
+
+
 
         private List<IDeviceTreeListItem> items = new();
         private Device device;
