@@ -41,7 +41,7 @@ namespace PDSystem.Device
         int FullModule { get; }
     }
 
-    public class IOChannel : IIOChannel, ISaveToLua
+    public class IOChannel : IIOChannel, ISaveAsLuaTable
     {
 
         /// <param name="channelType">Тип канала</param>
@@ -124,7 +124,7 @@ namespace PDSystem.Device
         private int moduleOffset;
     }
 
-    public class DeviceChannels : ISaveToLua
+    public class DeviceChannels : ISaveAsLuaTable
     {
 
         public DeviceChannels()

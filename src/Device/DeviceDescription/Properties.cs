@@ -68,13 +68,20 @@ namespace PDSystem.Device
         private string description;
     }
 
-    public class DeviceProperties : ISaveToLua
+    public class DeviceProperties : ISaveAsLuaTable
     {
-        public DeviceProperties CloneTemplate() => new DeviceProperties(ToList());
-
         public DeviceProperties()
         {
 
+        }
+
+        /// <summary>
+        /// Конструктор для инициализации свойств из списка свойств
+        /// </summary>
+        /// <param name="parametersList">Список свойств</param>
+        public DeviceProperties(List<Property> parametersList)
+        {
+            properties = parametersList.ToDictionary<Property, Property, object?>(prop => prop, prop => null);
         }
 
         /// <summary>
@@ -150,14 +157,7 @@ namespace PDSystem.Device
             return $"'{value}'";
         }
 
-        /// <summary>
-        /// Конструктор для инициализации свойств из списка свойств
-        /// </summary>
-        /// <param name="parametersList">Список свойств</param>
-        public DeviceProperties(List<Property> parametersList)
-        {
-            properties = parametersList.ToDictionary<Property, Property, object?>(prop => prop, prop => null);
-        }
+        
 
         public bool Empty => properties.Any() is false;
 

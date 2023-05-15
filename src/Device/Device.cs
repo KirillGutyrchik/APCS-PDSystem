@@ -66,7 +66,7 @@ namespace PDSystem.Device
         void SetIolConfProperty(string propertyName, double value);
     }
 
-    public abstract class Device : IComparable<Device>, IEquatable<Device>, IDevice, ISaveToLua
+    public abstract class Device : IComparable<Device>, IEquatable<Device>, IDevice, ISaveAsLuaTable
     {
         /// <param name="subType"> Подтип устройства</param>
         /// <param name="cadName"> САПр имя устройства (+OBJ1-DEV2) </param>

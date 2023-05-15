@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device
 {
-    public class DeviceManager : ISaveToLua
+    public class DeviceManager : ISaveAsLuaTable
     {
         private static readonly Dictionary<DeviceType, Func<DeviceSubType, DeviceInfo, Device>> DeviceCreator = new()
         {

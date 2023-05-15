@@ -32,7 +32,8 @@ namespace PDSystem.Device.DeviceControl
         {
             var infoContainer = new DeviceOptionsItem("Описание", IconIndex.Description, this);
 
-            infoContainer.AddOptionItem(new DeviceItemInfo("Подтип", device.DeviceSubType.Name, infoContainer));
+            infoContainer.AddOptionItem(new DeviceItemSubType(infoContainer));
+            
             infoContainer.AddOptionItem(new DeviceItemInfo("Описание", device.Description, infoContainer));
             infoContainer.AddOptionItem(new DeviceItemInfo("Изделие", device.ArticleName, infoContainer));
 

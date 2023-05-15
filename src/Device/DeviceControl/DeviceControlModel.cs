@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static KopiLua.Lua;
 
 namespace PDSystem.Device.DeviceControl
 {
@@ -39,6 +40,11 @@ namespace PDSystem.Device.DeviceControl
 
             treeListView.FormatCell += TreeListView_FormatCell;
 
+            treeListView.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
+            treeListView.CellEditStarting += TreeListView_CellEditStarting;
+            treeListView.CellEditFinishing += TreeListView_CellEditFinishing;
+            //treeListView.CellEdit
+
             var columnHeader_first = new OLVColumn
             {
                 Text = "Название",
@@ -54,13 +60,65 @@ namespace PDSystem.Device.DeviceControl
                 Text = "Описание",
                 MinimumWidth = 100,
                 Sortable = false,
-                IsEditable = false,
+                IsEditable = true,
                 AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.SecondColumn,
             };
 
 
             treeListView.Columns.Add(columnHeader_first);
             treeListView.Columns.Add(columnHeader_second);
+        }
+
+        
+
+        private void TreeListView_CellEditStarting(object sender, CellEditEventArgs e)
+        {
+            IDeviceTreeListItem? item = e.RowObject as IDeviceTreeListItem;
+            if (treeListView is null ||
+                item is null || 
+                item.IsEditable is false)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+
+            if (item.ComboBoxData is not null)
+            {
+                // Инициализация редактора с выпадающим списком для клетки
+                comboBoxCellEditor = new ComboBox();
+                comboBoxCellEditor.Items.AddRange(item.ComboBoxData.ToArray());
+                comboBoxCellEditor.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboBoxCellEditor.Sorted = true;
+                comboBoxCellEditor.AutoCompleteSource = AutoCompleteSource.ListItems;
+                comboBoxCellEditor.AutoCompleteMode = AutoCompleteMode.Append;
+                comboBoxCellEditor.Enabled = true;
+                comboBoxCellEditor.Visible = true;
+                comboBoxCellEditor.Text = e.Value.ToString();
+                comboBoxCellEditor.Bounds = e.CellBounds;
+                e.Control = comboBoxCellEditor;
+                comboBoxCellEditor.GotFocus += (sender, e) => comboBoxCellEditor.DroppedDown = true;
+                comboBoxCellEditor.Focus();
+                treeListView.Freeze();
+            }
+            else
+            {
+                // Инициализация редактора для клетки
+                textBoxCellEditor = new TextBox();
+                textBoxCellEditor.Enabled = true;
+                textBoxCellEditor.Visible = true;
+                textBoxCellEditor.Text = item.EditText;
+                textBoxCellEditor.Bounds = e.CellBounds;
+                e.Control = textBoxCellEditor;
+                textBoxCellEditor.Focus();
+                treeListView.Freeze();
+            }
+        }
+
+        private void TreeListView_CellEditFinishing(object sender, CellEditEventArgs e)
+        {
+            e.Cancel = true;
+            treeListView?.Unfreeze();
         }
 
         private void TreeListView_FormatCell(object? sender, FormatCellEventArgs e)
@@ -99,6 +157,9 @@ namespace PDSystem.Device.DeviceControl
         }
 
         private TreeListView? treeListView = null;
+
+        private TextBox textBoxCellEditor;
+        private ComboBox comboBoxCellEditor;
 
         private DeviceManager deviceManager = DeviceManager.Instance;
     }

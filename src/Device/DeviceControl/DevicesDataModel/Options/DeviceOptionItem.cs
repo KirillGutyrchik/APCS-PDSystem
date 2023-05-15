@@ -21,6 +21,8 @@
 
         public Device? Device => parent.Device;
 
+        public virtual List<string>? ComboBoxData => null;
+
         public DeviceOptionItem(DeviceOptionsItem parent)
         {
             this.parent = parent;

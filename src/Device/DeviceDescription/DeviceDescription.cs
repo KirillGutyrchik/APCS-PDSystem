@@ -10,57 +10,39 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device
 {
-    public class DeviceDescription : ISaveToLua
+    public class DeviceDescription : ISaveAsLuaTable
     {
-        /// <summary>
-        /// Клонирование описания
-        /// </summary>
-        /// <returns>Клон описания устройства с пустыми значениями</returns>
-        public DeviceDescription CloneTemplate()
-        {
-            return new DeviceDescription()
-            {
-                Parameters = parameters?.CloneTemplate() ?? new(),
-                Properties = properties?.CloneTemplate() ?? new(),
-                //Channels = channels?.Select(ch => new IOChannel(ch.ChannelType, ch.Comment)).ToList() ?? new(),
-                DeviceTags = deviceTags ?? new Dictionary<string, int>().ToImmutableDictionary(),
-            };
-        }
-
         public StringBuilder SaveAsLuaTable(string prefix = "")
         {
-            var result = new StringBuilder();
-
-            result
-                //.Append()
-                .Append(Channels.SaveAsLuaTable(prefix));
-
-
-            return result;
+            return new StringBuilder()
+                .Append(Properties.SaveAsLuaTable(prefix))
+                .Append(Channels.SaveAsLuaTable(prefix))
+                // RT PARAMETERS
+                .Append(Parameters.SaveAsLuaTable(prefix));
         }
 
         public DeviceChannels Channels
         {
-            get => channels ?? new();
-            set => channels ??= value;
+            get => channels ??= new();
+            init => channels = value;
         }
 
         public DeviceParameters Parameters
         {
-            get => parameters ?? new();
-            set => parameters ??= value;
+            get => parameters ??= new();
+            init => parameters = value;
         }
 
         public DeviceRuntimeParameters RuntimeParameters
         {
-            get => runtimeParameters ?? new();
-            set => runtimeParameters ??= value;
+            get => runtimeParameters ??= new();
+            init => runtimeParameters = value;
         }
 
         public DeviceProperties Properties
         {
-            get => properties ?? new();
-            set => properties ??= value;
+            get => properties ??= new();
+            init => properties = value;
         }
 
         public Dictionary<string, double> IolConfProperties
@@ -72,7 +54,7 @@ namespace PDSystem.Device
         public ImmutableDictionary<string, int> DeviceTags
         {
             get => deviceTags ??= new Dictionary<string, int>().ToImmutableDictionary();
-            set => deviceTags ??= value;
+            init => deviceTags = value;
         }
 
         private DeviceChannels? channels;

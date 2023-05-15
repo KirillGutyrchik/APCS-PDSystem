@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Ext
 {
-    public interface ISaveToLua
+    public interface ISaveAsLuaTable
     {
         /// <summary>
         /// Сохранение в виде Lua-таблицы

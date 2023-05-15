@@ -6,23 +6,22 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device.DeviceControl
 {
-    public class DeviceItemInfo : DeviceOptionItem
+    public class DeviceItemSubType : DeviceOptionItem
     {
-        public DeviceItemInfo(string name, string value, DeviceOptionsItem parent)
+        public DeviceItemSubType(DeviceOptionsItem parent)
             : base(parent)
         {
-            this.name = name;
-            this.value = value;
+
         }
 
         public override (string FirstColumn, string SecondColumn) DisplayText
-            => (name, value);
+            => ("Подтип", Device?.DeviceSubType.Name ?? "");
 
         public override string EditText => string.Empty;
 
-        public override bool IsEditable => false;
+        public override bool IsEditable => true;
 
-        private string name;
-        private string value;
+        public override List<string>? ComboBoxData 
+            => DeviceSubType.PossibleSubtypes(Device?.DeviceType);
     }
 }

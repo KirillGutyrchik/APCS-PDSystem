@@ -206,7 +206,7 @@ namespace PDSystem.Device
     /// Установить параметр: this[parameter] = value.
     /// Добавление новых параметров доступно только при инициализации.
     /// </remarks> 
-    public class DeviceParameters : ISaveToLua
+    public class DeviceParameters : ISaveAsLuaTable
     {
         /// <summary>
         /// val = get[key] - получить значение параметра, если он существует.
@@ -255,9 +255,6 @@ namespace PDSystem.Device
         {
             return parameters.Select(parameter => parameter.Key).ToList();
         }
-
-        
-        public DeviceParameters CloneTemplate() => new DeviceParameters(ToList());
 
         /// <summary>
         /// Содержит параметр

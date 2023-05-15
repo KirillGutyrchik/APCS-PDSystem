@@ -18,6 +18,12 @@ namespace PDSystem.Device
         /// <summary> Неопределенный подтип. </summary>
         public static readonly DeviceSubType NONE = new(0, nameof(NONE));
 
+        public static List<string> PossibleSubtypes(DeviceType? type)
+        {
+            if (type is null) return new();
+            return AllItems.Value.Where(subtype => CheckSubType(type, subtype.Value))
+                .Select(subtype => subtype.Value.Name).ToList();
+        }
        
         /// <summary>
         /// Индентификатор подтипа
@@ -101,8 +107,7 @@ namespace PDSystem.Device
             Parameters = new DeviceParameters(this.Parameters),
             RuntimeParameters = new DeviceRuntimeParameters(this.RuntimeParameters),
             Properties = new DeviceProperties(this.Properties),
-            Channels = new DeviceChannels(Channels.DO, Channels.DI, Channels.AO, Channels.AI),
-            
+            Channels = new DeviceChannels(Channels.DO, Channels.DI, Channels.AO, Channels.AI),   
             DeviceTags = this.DeviceTags.ToImmutableDictionary(),
         };
 

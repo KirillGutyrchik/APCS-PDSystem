@@ -26,6 +26,8 @@
             set => parent = value;
         }
 
+        public List<string>? ComboBoxData => null;
+
         private IDeviceTreeListItem? parent = null;
         private List<IDeviceTreeListItem> items = new();
     }
