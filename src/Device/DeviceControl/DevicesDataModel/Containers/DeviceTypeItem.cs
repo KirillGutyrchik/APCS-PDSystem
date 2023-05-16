@@ -9,7 +9,7 @@
 
         #region DeviceTreeListItem
         public override (string FirstColumn, string SecondColumn) DisplayText 
-            => ($"{deviceType.Name} ({items.Count})", string.Empty);
+            => ($"{deviceType.Name} ({items.Sum(item => item.Items.Count)})", string.Empty);
 
         public override string EditText => string.Empty;
 
@@ -19,8 +19,6 @@
 
         public override IDeviceTreeListItem? Parent => null;
         #endregion
-
-        
 
         public void AddDevice(Device device)
         {

@@ -15,18 +15,26 @@ namespace PDSystem.Device.DeviceControl
 
         public void AddDevice(Device device)
         {
-            var typeContainer = deviceTree.FirstOrDefault(typeContainer => typeContainer.DeviceType == device.DeviceType);
+            var typeContainer = roots.FirstOrDefault(typeContainer => typeContainer.DeviceType == device.DeviceType);
             if (typeContainer is null)
             {
                 typeContainer = new(device.DeviceType);
-                deviceTree.Add(typeContainer);
+                roots.Add(typeContainer);
             }
             
             typeContainer.AddDevice(device);
         }
 
-        public List<IDeviceTreeListItem> DeviceTree => deviceTree.Cast<IDeviceTreeListItem>().ToList(); 
+        public void AddRangeDevices(List<Device> devices)
+        {
+            foreach (var device in devices) 
+            {
+                AddDevice(device);
+            }
+        }
 
-        private List<DeviceTypeItem> deviceTree = new();
+        public List<IDeviceTreeListItem> Roots => roots.Cast<IDeviceTreeListItem>().ToList(); 
+
+        private List<DeviceTypeItem> roots = new();
     }
 }

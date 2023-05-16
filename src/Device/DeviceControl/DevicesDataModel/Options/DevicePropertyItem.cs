@@ -14,9 +14,17 @@
         public override (string FirstColumn, string SecondColumn) DisplayText
             => ($"{property.Name}", value?.ToString() ?? string.Empty);
 
-        public override string EditText => value?.ToString() ?? string.Empty;
+        public override string EditText
+        { 
+            get => value?.ToString() ?? string.Empty;
+            set 
+            {
+                Device.Properties[property] = value;
+                this.value = Device.Properties[property];
+            }
+        }
 
-        public override bool IsEditable => true;
+    public override bool IsEditable => true;
 
         private Property property;
         private object? value;

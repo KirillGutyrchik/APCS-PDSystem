@@ -42,7 +42,7 @@ namespace PDSystem.Device.DeviceControl
 
             treeListView.CellEditActivation = ObjectListView.CellEditActivateMode.DoubleClick;
             treeListView.CellEditStarting += TreeListView_CellEditStarting;
-            treeListView.CellEditFinishing += TreeListView_CellEditFinishing;
+            //treeListView.CellEditFinishing += TreeListView_CellEditFinishing; ;
             //treeListView.CellEdit
 
             var columnHeader_first = new OLVColumn
@@ -62,14 +62,29 @@ namespace PDSystem.Device.DeviceControl
                 Sortable = false,
                 IsEditable = true,
                 AspectGetter = item => (item as IDeviceTreeListItem)?.DisplayText.SecondColumn,
+                AspectPutter = AspectPutter,
+                //
+                //(item, value) =>
+                //{
+                //    (item as IDeviceTreeListItem).EditText = value.ToString();
+                //    treeListView.Unfreeze();
+                //}
             };
-
 
             treeListView.Columns.Add(columnHeader_first);
             treeListView.Columns.Add(columnHeader_second);
         }
 
-        
+        private void AspectPutter(object item, object value)
+        {
+            var deviceTreeListItem = item as IDeviceTreeListItem;
+            if (deviceTreeListItem is not null)
+            {
+                deviceTreeListItem.EditText = value.ToString() ?? string.Empty;
+            }
+
+            treeListView?.Unfreeze();
+        }
 
         private void TreeListView_CellEditStarting(object sender, CellEditEventArgs e)
         {
@@ -78,6 +93,13 @@ namespace PDSystem.Device.DeviceControl
                 item is null || 
                 item.IsEditable is false)
             {
+                e.Cancel = true;
+                return;
+            }
+
+            if (item is DeviceChannelItem)
+            {
+                // bind channel
                 e.Cancel = true;
                 return;
             }
@@ -115,12 +137,6 @@ namespace PDSystem.Device.DeviceControl
             }
         }
 
-        private void TreeListView_CellEditFinishing(object sender, CellEditEventArgs e)
-        {
-            e.Cancel = true;
-            treeListView?.Unfreeze();
-        }
-
         private void TreeListView_FormatCell(object? sender, FormatCellEventArgs e)
         {
             e.Item.Font = new Font(FontFamily.GenericMonospace, 8, FontStyle.Bold);
@@ -137,8 +153,8 @@ namespace PDSystem.Device.DeviceControl
             if (treeListView is null) return;
 
             treeListView.BeginUpdate();
-            deviceManager.InitDevicesTreeModel();
-            treeListView.Roots = deviceManager.DeviceTree.DeviceTree;
+            deviceTree.AddRangeDevices(deviceManager.Devices);
+            treeListView.Roots = deviceTree.Roots;
 
             treeListView.EndUpdate();
         }
@@ -162,5 +178,6 @@ namespace PDSystem.Device.DeviceControl
         private ComboBox comboBoxCellEditor;
 
         private DeviceManager deviceManager = DeviceManager.Instance;
+        private DevicesTreeModel deviceTree = new();
     }
 }

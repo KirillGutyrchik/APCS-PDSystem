@@ -5,10 +5,13 @@
         public virtual (string FirstColumn, string SecondColumn) DisplayText 
             => (string.Empty, string.Empty);
 
-        public virtual string EditText 
-            => string.Empty;
+        public virtual string EditText
+        { 
+            get => string.Empty;
+            set { return; }
+        }
 
-        public virtual bool IsEditable 
+    public virtual bool IsEditable 
             => false;
 
         public virtual IconIndex IconIndex 

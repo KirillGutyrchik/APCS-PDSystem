@@ -20,6 +20,11 @@ function DevicesInit()
 		SetChannels(device, "AO", device_table.AO or nil)
 		SetChannels(device, "AI", device_table.AI or nil)
 
+		if device_table.prop then
+			for name, value in pairs(device_table.prop) do
+				device:SetProperty(name, value)
+			end
+		end
 	end
 end
 

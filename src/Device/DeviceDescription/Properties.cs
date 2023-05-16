@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,6 +49,27 @@ namespace PDSystem.Device
         public static readonly Property SIGNALS_SEQUENCE = new(nameof(SIGNALS_SEQUENCE), "Последовательность сигналов");
 
         /// <summary>
+        /// Словарь свойств по названию 
+        /// </summary>
+        protected static readonly Lazy<Dictionary<string, Property>> AllProperties = InitProperties();
+
+        /// <summary>
+        /// Инициализация словаря параметров
+        /// </summary>
+        private static Lazy<Dictionary<string, Property>> InitProperties()
+        {
+            return new Lazy<Dictionary<string, Property>>(() =>
+            {
+                return typeof(Property)
+                    .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                    .Where(x => x.FieldType == typeof(Property))
+                    .Select(x => x.GetValue(null))
+                    .Cast<Property>()
+                    .ToDictionary(x => x.name, x => x);
+            });
+        }
+
+        /// <summary>
         /// Название свойства
         /// </summary>
         public string Name => name;
@@ -55,8 +77,14 @@ namespace PDSystem.Device
         /// <summary>
         /// Описание свойства
         /// </summary>
-        public string Description => description;   
+        public string Description => description;
 
+        /// <summary>
+        /// Неявное преобразование строки в свойство
+        /// </summary>
+        /// <param name="property"></param>
+        public static implicit operator Property(string property)
+            => AllProperties.Value.GetValueOrDefault(property, NONE);
 
         private Property(string name, string description = "") 
         { 

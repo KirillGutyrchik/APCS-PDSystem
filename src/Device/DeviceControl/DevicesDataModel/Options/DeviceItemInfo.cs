@@ -18,7 +18,11 @@ namespace PDSystem.Device.DeviceControl
         public override (string FirstColumn, string SecondColumn) DisplayText
             => (name, value);
 
-        public override string EditText => string.Empty;
+        public override string EditText
+        {
+            get => string.Empty;
+            set => throw new NotImplementedException();
+        }
 
         public override bool IsEditable => false;
 

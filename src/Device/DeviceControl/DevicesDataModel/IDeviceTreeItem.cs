@@ -16,7 +16,7 @@ namespace PDSystem.Device.DeviceControl
         /// <summary>
         /// Редактируемое содержимой 2-й колонки
         /// </summary>
-        string EditText { get; }
+        string EditText { get; set; }
 
         /// <summary>
         /// Можно ли редактировать 2-ю колонку

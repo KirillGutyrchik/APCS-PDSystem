@@ -17,8 +17,11 @@ namespace PDSystem.Device.DeviceControl
         public override (string FirstColumn, string SecondColumn) DisplayText
             => ("Подтип", Device?.DeviceSubType.Name ?? "");
 
-        public override string EditText => string.Empty;
-
+        public override string EditText
+        {
+            get => string.Empty;
+            set { return; }
+        }
         public override bool IsEditable => true;
 
         public override List<string>? ComboBoxData 

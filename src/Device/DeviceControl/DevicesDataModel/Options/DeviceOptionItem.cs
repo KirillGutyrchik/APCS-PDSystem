@@ -5,7 +5,7 @@
         #region Реализация IDeviceTreeListItem
         public abstract (string FirstColumn, string SecondColumn) DisplayText { get; }
 
-        public abstract string EditText { get; }
+        public abstract string EditText { get; set; }
 
         public virtual IconIndex IconIndex => IconIndex.NONE;
         public abstract bool IsEditable { get; }

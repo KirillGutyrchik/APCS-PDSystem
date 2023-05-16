@@ -5,9 +5,17 @@
         public override (string FirstColumn, string SecondColumn) DisplayText
             => ($"{parameter.Name}", $"{EditText}");
 
-        public override string EditText => value?.ToString() ?? string.Empty;
+        public override string EditText
+        { 
+            get => value?.ToString() ?? string.Empty;
+            set
+            {
+                Device.Parameters[parameter] = value;
+                this.value = Device.Parameters[parameter];
+            }
+        }
 
-        public override bool IsEditable => true;
+    public override bool IsEditable => true;
 
         public DeviceParameterItem(Parameter parameter, object? value, DeviceOptionsItem parent)
             : base(parent)

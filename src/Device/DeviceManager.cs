@@ -77,14 +77,6 @@ namespace PDSystem.Device
             return AddDevice(type, subType, deviceInfo);
         }
 
-        public void InitDevicesTreeModel()
-        {
-            foreach (var device in devices)
-            {
-                deviceTree.AddDevice(device);
-            }
-        }
-
         public StringBuilder SaveAsLuaTable(string prefix)
         {
             var result = new StringBuilder();
@@ -101,12 +93,8 @@ namespace PDSystem.Device
         }
 
         public List<Device> Devices => devices;
-        public DevicesTreeModel DeviceTree => deviceTree;
-
-
 
         private static DeviceManager? instance = null;
         private List<Device> devices = new();
-        private DevicesTreeModel deviceTree = new();
     }
 }

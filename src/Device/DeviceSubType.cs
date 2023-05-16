@@ -29,10 +29,10 @@ namespace PDSystem.Device
         /// Индентификатор подтипа
         /// </summary>
         /// <param name="type">Тип устройства</param>
-        /// <returns>Номер типа умноженный на коэффициент</returns>
+        /// <returns> Номер типа c  умноженный на коэффициент </returns>
         private static int SubTypeIdentifier(DeviceType type)
         {
-            return typeWeight * type.Id;
+            return typeWeight * (type.Id + 1);
         }
 
         /// <summary>
