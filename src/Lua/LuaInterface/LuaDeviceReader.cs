@@ -11,7 +11,7 @@ namespace PDSystem.LUA
         /// <summary>
         /// Название файла с LUA-кодом для инициализации устройств
         /// </summary>
-        private static readonly string DeviceReaderLuaFileName = "Lua\\device_reader.lua";
+        private static readonly string DeviceReaderLuaFileName = "device_reader.lua";
 
         /// <summary>
         /// Функция инициализации устройств 
@@ -31,10 +31,9 @@ namespace PDSystem.LUA
         {
             LuaManager.Instance.Lua.DoString(mainIoData);
 
-            LuaManager.Instance.Lua.DoFile(Path.Combine(Path.GetDirectoryName(Assembly
-                .GetExecutingAssembly().Location) ?? "", DeviceReaderLuaFileName));
+            LuaManager.Instance.Lua.DoFile(Path.Combine(LuaManager.LuaDirectory, DeviceReaderLuaFileName));
 
-            LuaManager.Instance.Lua[LuaDeviceManagerName] = new LuaDeviceManager();
+            LuaManager.Instance.Lua[LuaDeviceManagerName] = LuaDeviceManager.Instance;
         }
 
         /// <summary>
@@ -51,6 +50,11 @@ namespace PDSystem.LUA
         /// </summary>
         public class LuaDeviceManager
         {
+            private static LuaDeviceManager? instance = null;
+            private LuaDeviceManager() { }
+
+            public static LuaDeviceManager Instance => instance ??= new();
+
             /// <summary>
             /// Добавить устройство
             /// </summary>
