@@ -8,8 +8,22 @@ namespace PDSystem.TechObject
 {
     public interface IBaseTechObjectManager
     {
+        IBaseTechObject GetTechObjectCopy(string name);
+
+        string GetS88Name(int s88Level);
+
+        int GetS88Level(string type);
+
+        List<IBaseTechObject> Objects { get; }
+    }
+
+    /// <summary>
+    /// Методы вызываемые в LUA
+    /// </summary>
+    public interface ILuaBaseTechObjectManager
+    {
         /// <summary>
-        /// Добавить базовый объект
+        /// Добавить базовый объект в менеджер объектов, делегирует.
         /// </summary>
         /// <param name="name">Имя</param>
         /// <param name="eplanName">Имя в eplan</param>
@@ -20,35 +34,22 @@ namespace PDSystem.TechObject
         /// <param name="luaModuleName">Имя модуля Lua для объекта</param>
         /// <param name="monitorName">Имя объекта Monitor (SCADA)</param>
         /// <param name="deprecated">Устарел объект, или нет</param>
-        /// <returns>Базовый объект</returns>
-        IBaseTechObject AddBaseObject(string name, string eplanName,
-            int s88Level, string basicName, string bindingName, bool isPID,
-            string luaModuleName, string monitorName, bool deprecated);
-
-        IBaseTechObject GetTechObjectCopy(string name);
-
-        string GetS88Name(int s88Level);
-
-        int GetS88Level(string type);
-
-        List<IBaseTechObject> Objects { get; }
+        /// <returns> Базовый объект в экземпляр LUA </returns>
+        ILuaBaseTechObject AddBaseObject(string name, string eplanName, int s88Level,
+            string basicName, string bindingName, bool isPID, string luaModuleName,
+            string monitorName, bool deprecated);
     }
 
-    public class BaseTechObjectManger : IBaseTechObjectManager
+    public class BaseTechObjectManager : IBaseTechObjectManager, ILuaBaseTechObjectManager
     {
-        private BaseTechObjectManger() { }
+        private BaseTechObjectManager() { }
 
-        private static BaseTechObjectManger? instance = null;
+        private static BaseTechObjectManager? instance = null;
 
-        public static BaseTechObjectManger Instance => instance ??= new();
+        public static BaseTechObjectManager Instance => instance ??= new();
 
 
         public List<IBaseTechObject> Objects => throw new NotImplementedException();
-
-        public IBaseTechObject AddBaseObject(string name, string eplanName, int s88Level, string basicName, string bindingName, bool isPID, string luaModuleName, string monitorName, bool deprecated)
-        {
-            throw new NotImplementedException();
-        }
 
         public int GetS88Level(string type)
         {
@@ -63,6 +64,18 @@ namespace PDSystem.TechObject
         public IBaseTechObject GetTechObjectCopy(string name)
         {
             throw new NotImplementedException();
+        }
+
+        ILuaBaseTechObject ILuaBaseTechObjectManager.AddBaseObject(string name,
+            string eplanName, int s88Level, string basicName, string bindingName,
+            bool isPID, string luaModuleName, string monitorName, bool deprecated)
+        {
+            var baseObject = new BaseTechObject()
+            {
+
+            };
+
+            return baseObject;
         }
     }
 }

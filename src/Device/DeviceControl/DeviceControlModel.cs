@@ -75,12 +75,12 @@ namespace PDSystem.Device.DeviceControl
             treeListView.Columns.Add(columnHeader_second);
         }
 
-        private void AspectPutter(object item, object value)
+        private void AspectPutter(object? item, object? value)
         {
             var deviceTreeListItem = item as IDeviceTreeListItem;
             if (deviceTreeListItem is not null)
             {
-                deviceTreeListItem.EditText = value.ToString() ?? string.Empty;
+                deviceTreeListItem.EditText = value?.ToString() ?? string.Empty;
             }
 
             treeListView?.Unfreeze();

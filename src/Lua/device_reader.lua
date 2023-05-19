@@ -12,7 +12,9 @@ function DevicesInit()
 		end
 		
 		if device_table.par then
-			device:SetParameters(device_table.par)	
+			for index, value in ipairs(device_table.par) do
+				device:SetParameter(index - 1, value)
+			end
 		end
 		
 		SetChannels(device, "DO", device_table.DO or nil)

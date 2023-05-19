@@ -66,7 +66,42 @@ namespace PDSystem.Device
         void SetIolConfProperty(string propertyName, double value);
     }
 
-    public abstract class Device : IComparable<Device>, IEquatable<Device>, IDevice, ISaveAsLuaTable
+    /// <summary>
+    /// Методы для Device вызываемые из LUA
+    /// </summary>
+    public interface ILuaDevice
+    {
+        /// <summary>
+        /// Установить значение параметра для устройства
+        /// </summary>
+        /// <param name="index"> Индекс параметра </param>
+        /// <param name="value"> Значение </param>
+        void SetParameter(int index, double value);
+
+        /// <summary>
+        /// Установить значения канала по индексу для устройства
+        /// </summary>
+        /// <param name="channelType"> Тип канала: "AI", "DI",... </param>
+        /// <param name="index"> Индекс канала в группу по типпу: 1-й AI, 2-й AI,... </param>
+        /// <param name="node"> Номер узла </param>
+        /// <param name="offset"> Смещение </param>
+        /// <param name="physical_port"> Физический порт </param>
+        /// <param name="logical_port"> Логический порт </param>
+        /// <param name="module_offset"> Смещение модуля </param>
+        void SetChannel(string channelType, int index,
+                    int node, int offset, int physical_port,
+                    int logical_port, int module_offset);
+
+        /// <summary>
+        /// Установить значение свойства
+        /// </summary>
+        /// <param name="name"> Имя свойства </param>
+        /// <param name="value"> Значение свойства </param>
+        void SetProperty(string name, string value);
+    }
+
+    public abstract class Device : IComparable<Device>, IEquatable<Device>,
+        IDevice, ISaveAsLuaTable, ILuaDevice
     {
         /// <param name="subType"> Подтип устройства</param>
         /// <param name="cadName"> САПр имя устройства (+OBJ1-DEV2) </param>
@@ -82,10 +117,10 @@ namespace PDSystem.Device
 
         public string CADName => deviceInfo.CADName;
 
-        public string Description 
-        { 
-            get => deviceInfo.Description; 
-            set => deviceInfo.Description = value; 
+        public string Description
+        {
+            get => deviceInfo.Description;
+            set => deviceInfo.Description = value;
         }
 
         public int ObjectNumber => deviceInfo.ObjectNumber;
@@ -94,19 +129,19 @@ namespace PDSystem.Device
 
         public int DeviceNumber => deviceInfo.DeviceNumber;
 
-        public string ArticleName 
-        { 
+        public string ArticleName
+        {
             get => deviceInfo.ArticleName;
-            set => deviceInfo.ArticleName = value; 
+            set => deviceInfo.ArticleName = value;
         }
         #endregion
 
         public DeviceType DeviceType => deviceType ??= DeviceType.FromName(GetType().Name);
 
-        public DeviceSubType DeviceSubType 
-        { 
+        public DeviceSubType DeviceSubType
+        {
             get => deviceSubType;
-            init => deviceSubType = value; 
+            init => deviceSubType = value;
         }
 
         public Dictionary<string, double> IolConfProperties => throw new NotImplementedException();
@@ -144,14 +179,14 @@ namespace PDSystem.Device
             {
                 return DeviceType.CompareTo(otherDevice.DeviceType);
             }
-            
+
             if (ObjectName != otherDevice.ObjectName)
             {
                 return ObjectName.CompareTo(otherDevice.ObjectName);
             }
 
-            if (ObjectNumber != otherDevice.ObjectNumber) 
-            { 
+            if (ObjectNumber != otherDevice.ObjectNumber)
+            {
                 return ObjectNumber.CompareTo(otherDevice.ObjectNumber);
             }
 
@@ -178,7 +213,7 @@ namespace PDSystem.Device
             throw new NotImplementedException();
         }
 
-        
+
         public virtual string GetRange()
         {
             return string.Empty;
@@ -205,6 +240,24 @@ namespace PDSystem.Device
 
             return result;
         }
+
+        #region ILuaDevice
+        public void SetParameter(int index, double value)
+        {
+            Parameters[index] = value;
+        }
+
+        public void SetChannel(string channelType, int index, int node, int offset, int physical_port, int logical_port, int module_offset)
+        {
+            Channels.AllChannels.Where(channel => channel.Name == channelType).ToArray()
+                [index].SetChannel(node, offset, physical_port, logical_port, module_offset);
+        }
+
+        public void SetProperty(string name, string value)
+        {
+            Properties[name] = value;
+        }
+        #endregion
 
         protected DeviceType? deviceType = null;
         protected DeviceSubType deviceSubType;

@@ -21,53 +21,29 @@ namespace PDSystemTests.DeviceTests
             // equals
             new object[]
             {
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A1NONE2"
-                }),
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A1NONE2"
-                }),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A1-NONE2") ?? new()),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A1-NONE2") ?? new()),
                 0
             },
             // deviceNumber
             new object[]
             {
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A1NONE2"
-                }),
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A1NONE3"
-                }),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A1-NONE2") ?? new()),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A1-NONE3") ?? new()),
                 -1
             },
             // objectNumber
             new object[]
             {
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A2NONE2"
-                }),
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A1NONE2"
-                }),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A2-NONE2") ?? new()),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A1-NONE2") ?? new()),
                 1
             },
             // objectName
             new object[]
             {
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "A1NONE2"
-                }),
-                new NONE(DeviceSubType.NONE, new DeviceInfo()
-                {
-                    ParseName = "B1NONE2"
-                }),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+A1-NONE2") ?? new()),
+                new NONE(DeviceSubType.NONE, DeviceInfo.ParseCAD("+B1-NONE2") ?? new()),
                 -1
             },
         };

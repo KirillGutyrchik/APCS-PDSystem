@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace PDSystem.TechObject
 {
-    public interface IBaseOperation
+    public class BaseParameter
     {
 
-    }
-
-    public class BaseOperation
-    {
     }
 }

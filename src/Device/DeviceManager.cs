@@ -8,7 +8,23 @@ using System.Threading.Tasks;
 
 namespace PDSystem.Device
 {
-    public class DeviceManager : ISaveAsLuaTable
+    public interface ILuaDeviceManager
+    {
+        /// <summary>
+        /// Добавить устройство
+        /// </summary>
+        /// <param name="name"> Название </param>
+        /// <param name="typeID"> Номер типа </param>
+        /// <param name="subtypeID"> Номер подтипа </param>
+        /// <param name="description"> Описание </param>
+        /// <param name="article"> Изделие </param>
+        /// <returns></returns>
+        ILuaDevice? AddDevice(string name, int typeID, int subtypeID,
+            string description, string article);
+    }
+
+
+    public class DeviceManager : ISaveAsLuaTable, ILuaDeviceManager
     {
         private static readonly Dictionary<DeviceType, Func<DeviceSubType, DeviceInfo, Device>> DeviceCreator = new()
         {
@@ -56,26 +72,24 @@ namespace PDSystem.Device
             return device;
         }
 
-        /// <summary>
-        /// Добавить устройство по назаванию, номеру типа и номеру подтипа.
-        /// Применяется при 
-        /// </summary>
-        /// <param name="name"> имя устройства </param>
-        /// <param name="typeID"> номер типа </param>
-        /// <param name="subTypeID"> номер подтипа </param>
-        /// <returns> Добавленное устройство </returns>
-        public Device? AddDevice(string name, int typeID,  int subTypeID)
+        #region ILuaDeviceManager
+        public ILuaDevice? AddDevice(string name, int typeID, int subtypeID, string description, string article)
         {
             var deviceInfo = DeviceInfo.ParseLUA(name, typeID) ?? new();
 
             if (deviceInfo is null)
                 return null;
 
+
+            deviceInfo.ArticleName = article;
+            deviceInfo.Description = description;
+
             var type = DeviceType.FromID(typeID);
-            var subType = DeviceSubType.FromTypeAndID(type, subTypeID);
+            var subType = DeviceSubType.FromTypeAndID(type, subtypeID);
 
             return AddDevice(type, subType, deviceInfo);
         }
+        #endregion
 
         public StringBuilder SaveAsLuaTable(string prefix)
         {
@@ -91,6 +105,8 @@ namespace PDSystem.Device
 
             return result;
         }
+
+        
 
         public List<Device> Devices => devices;
 
