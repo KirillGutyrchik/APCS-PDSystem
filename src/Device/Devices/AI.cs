@@ -4,7 +4,7 @@ namespace PDSystem.Device
     public partial record class DeviceSubType
     {
         /// <summary> Аналоговый вход с привязкой к модулям ввода-вывода </summary>
-        public static readonly DeviceSubType AI = new(SubTypeIdentifier(DeviceType.AI) + 1, nameof(AI))
+        public static readonly DeviceSubType AI = new(SubTypeIdentifier(DeviceType.AI, 1), nameof(AI))
         {
             Parameters =
             {
@@ -27,7 +27,7 @@ namespace PDSystem.Device
         };
 
         /// <summary> Виртуальный аналоговый вход (без привязки к модулям) </summary>
-        public static readonly DeviceSubType AI_VIRT = new(SubTypeIdentifier(DeviceType.AI) + 2, nameof(AI_VIRT))
+        public static readonly DeviceSubType AI_VIRT = new(SubTypeIdentifier(DeviceType.AI, 2), nameof(AI_VIRT))
         {
             DeviceTags =
             {

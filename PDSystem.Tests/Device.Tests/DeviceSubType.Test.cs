@@ -66,7 +66,7 @@ namespace PDSystemTests.DeviceTests
         [TestCaseSource(nameof(GetID_Test_Cases))]
         public void GetID_Test(DeviceSubType dst, int id)
         {
-            Assert.That(dst.Id, Is.EqualTo(id));
+            Assert.That(dst.ID, Is.EqualTo(id));
         }
 
         private static readonly object[] GetID_Test_Cases =

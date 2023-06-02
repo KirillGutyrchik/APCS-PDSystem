@@ -2,7 +2,7 @@
 {
     public partial record class DeviceSubType
     {
-        public static readonly DeviceSubType C = new(SubTypeIdentifier(DeviceType.C) + 1, nameof(C))
+        public static readonly DeviceSubType C = new(SubTypeIdentifier(DeviceType.C, 1), nameof(C))
         {
             Parameters =
             {

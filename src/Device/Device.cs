@@ -226,19 +226,15 @@ namespace PDSystem.Device
 
         public virtual StringBuilder SaveAsLuaTable(string prefix = "")
         {
-            var result = new StringBuilder();
-
-            result
+            return new StringBuilder()
                 .Append($"{prefix}{{\n")
                 .Append($"{prefix}name    = '{Name}',\n")
                 .Append($"{prefix}descr   = '{Description}',\n")
-                .Append($"{prefix}dtype   = '{DeviceType.Id}',\n")
-                .Append($"{prefix}subtype = '{DeviceSubType.Id}', -- {DeviceSubType.Name}\n")
+                .Append($"{prefix}dtype   = {DeviceType.ID},\n")
+                .Append($"{prefix}subtype = {DeviceSubType.ID}, -- {DeviceSubType.Name}\n")
                 .Append($"{prefix}article = '{ArticleName}',\n")
                 .Append(deviceDescription.SaveAsLuaTable(prefix))
                 .Append($"{prefix}}},\n\n");
-
-            return result;
         }
 
         #region ILuaDevice

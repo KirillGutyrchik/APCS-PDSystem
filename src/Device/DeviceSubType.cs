@@ -30,10 +30,8 @@ namespace PDSystem.Device
         /// </summary>
         /// <param name="type">Тип устройства</param>
         /// <returns> Номер типа c  умноженный на коэффициент </returns>
-        private static int SubTypeIdentifier(DeviceType type)
-        {
-            return typeWeight * (type.Id + 1);
-        }
+        private static int SubTypeIdentifier(DeviceType type, int id = 0)
+            => typeWeight * (type.ID + 1) + id;
 
         /// <summary>
         /// Номер подтипа.
@@ -41,13 +39,7 @@ namespace PDSystem.Device
         /// <remarks>
         /// Этот номер не зависит от типа устройства.
         /// </remarks>
-        public override int Id
-        {
-            get
-            {
-                return id % typeWeight;
-            }
-        }
+        public override int ID => id % typeWeight;
 
         /// <summary>
         /// Получить экземпляр подтипа по типу и номеру подтипа
@@ -56,13 +48,7 @@ namespace PDSystem.Device
         /// <param name="id">Номер подтипа</param>
         /// <returns>Подтип устройства (NONE если подтип не найден)</returns>
         public static DeviceSubType FromTypeAndID(DeviceType type, int id)
-        {
-            if (AllItems.Value.TryGetValue(id + SubTypeIdentifier(type), out var matchingItem))
-            {
-                return matchingItem;
-            }
-            return NONE;
-        }
+            => AllItems.Value.GetValueOrDefault(SubTypeIdentifier(type, id), NONE);
 
         /// <summary>
         /// Получить экземпляр подтипа по типу и названию подтипа
@@ -76,7 +62,7 @@ namespace PDSystem.Device
             {
                 return FromTypeAndID(type, defaultID);
             }
-
+            
             if (AllItemsByName.Value.TryGetValue(subtype, out var matchingItem) 
                 && CheckSubType(type, matchingItem) == true)
             {
@@ -93,9 +79,7 @@ namespace PDSystem.Device
         /// <param name="subType">Подтип устройства</param>
         /// <returns>true when subtype in type</returns>
         private static bool CheckSubType(DeviceType type, DeviceSubType subType)
-        {
-            return subType.Id == subType.id - SubTypeIdentifier(type);
-        }
+            => subType.ID == subType.id - SubTypeIdentifier(type, 0);
 
 
         #region Device Description

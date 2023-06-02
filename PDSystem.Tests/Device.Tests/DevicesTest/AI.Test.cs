@@ -13,12 +13,8 @@ namespace PDSystemTests.DeviceTests.DevicesTest
     {
         [ExcludeFromCodeCoverage]
         public override AI Creator(DeviceSubType subType)
-        {
-            return new AI(subType, new DeviceInfo() 
-            {
-                ParseName = "OBJ1AI1",
-            });
-        }
+            => new AI(subType, DeviceInfo.ParseCAD("+OBJ1-AI1") ?? new());
+
 
         [ExcludeFromCodeCoverage]
         [TestCaseSource(nameof(Create_checkChannelsCount_Cases))]

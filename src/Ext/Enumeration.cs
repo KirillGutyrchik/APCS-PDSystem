@@ -31,7 +31,7 @@ namespace PDSystem.Ext
         /// <summary>
         /// Id элемента
         /// </summary>
-        public virtual int Id
+        public virtual int ID
         {
             get
             {
@@ -124,9 +124,9 @@ namespace PDSystem.Ext
             throw new InvalidOperationException($"'{name}' is not a valid display name in {typeof(T)}");
         }
 
-        public override int GetHashCode() => Id.GetHashCode();
+        public override int GetHashCode() => ID.GetHashCode();
 
-        public int CompareTo(T? other) => Id.CompareTo(other!.Id);
+        public int CompareTo(T? other) => ID.CompareTo(other!.ID);
 
         protected int id;
         protected string name;

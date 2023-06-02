@@ -11,7 +11,7 @@
             set { return; }
         }
 
-    public virtual bool IsEditable 
+        public virtual bool IsEditable 
             => false;
 
         public virtual IconIndex IconIndex 

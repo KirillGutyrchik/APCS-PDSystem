@@ -3,7 +3,7 @@
     public partial record class DeviceSubType
     {
         /// <summary> Аналоговый выход с привязкой к модулям ввода-вывода </summary>
-        public static readonly DeviceSubType AO = new(SubTypeIdentifier(DeviceType.AO) + 1, nameof(AO))
+        public static readonly DeviceSubType AO = new(SubTypeIdentifier(DeviceType.AO, 1), nameof(AO))
         {
             Parameters =
             {
@@ -24,7 +24,7 @@
         };
 
         /// <summary> Виртуальный аналоговый выход (без привязки к модулям) </summary>
-        public static readonly DeviceSubType AO_VIRT = new(SubTypeIdentifier(DeviceType.AO) + 2, nameof(AO_VIRT))
+        public static readonly DeviceSubType AO_VIRT = new(SubTypeIdentifier(DeviceType.AO, 2), nameof(AO_VIRT))
         {
             DeviceTags =
             {

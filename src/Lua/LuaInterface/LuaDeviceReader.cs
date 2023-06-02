@@ -41,8 +41,8 @@ namespace PDSystem.LUA
         /// </summary>
         public void InitDevices()
         {
-            LuaFunction? init_devices = LuaManager.Instance.Lua[LuaMainFunctionName] as LuaFunction;
-            init_devices?.Call();
+            LuaFunction? DevicesInit = LuaManager.Instance.Lua[LuaMainFunctionName] as LuaFunction;
+            DevicesInit?.Call();
         }
 
     }

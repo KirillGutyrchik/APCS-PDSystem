@@ -17,12 +17,13 @@
             get => parent;
             set => parent = value as DeviceOptionsItem ?? throw new ArgumentNullException();
         }
+
+        public virtual List<string>? ComboBoxData => null;
         #endregion
 
         public Device? Device => parent.Device;
 
-        public virtual List<string>? ComboBoxData => null;
-
+        
         public DeviceOptionItem(DeviceOptionsItem parent)
         {
             this.parent = parent;
